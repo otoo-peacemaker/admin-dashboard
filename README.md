@@ -1,6 +1,20 @@
 # auths
-
+This project is a base web app for authentication web development.
+start by creating your app : vue create appname.
 ## Project setup
+###
+
+
+### create your application
+```
+vue create appname
+```
+### Add vuetify: material design UI
+```
+vue add vuetify
+```
+
+### install all the packages
 ```
 npm install
 ```
