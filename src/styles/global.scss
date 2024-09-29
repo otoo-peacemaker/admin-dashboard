@@ -1,0 +1,95 @@
+html {
+    font-family: 'Roboto', sans-serif;
+  }
+  
+  h1 {
+    font-size: 36px;
+    font-weight: bold;
+    line-height: 40px;
+  }
+  
+  h2 {
+    font-size: 32px;
+    font-weight: 500;
+    line-height: 36px;
+  }
+  
+  body {
+    font-size: 16px;
+    line-height: 24px;
+  }
+  .element {
+    height: 2rem;
+  }
+
+  /* global.scss */
+
+/* Default Button Style */
+.v-btn {
+  background-color: #B11F1A !important; // Primary background color
+  color: #FFFFFF !important; // Text color
+  font-size: 16px; // Button font size
+  font-weight: bold; // Button font weight
+  text-transform: none; // Capitalize text
+  letter-spacing: 0.1em; // Letter spacing
+  padding: 12px 24px; // Padding for buttons
+  border-radius: 8px; // Border radius
+}
+
+/* Hover state */
+.v-btn:hover {
+  background-color: darken(#B11F1A, 10%) !important; // Darken on hover
+}
+
+.v-btn.v-btn--variant-text {
+  background-color: transparent !important; // Ensure transparent background
+  color: #000000 !important; // Primary color for text
+  box-shadow: none !important; // Remove shadow
+  font-size: 13px; // Button font size
+  font-weight: normal !important; // Normal font weight
+}
+
+.v-alert {
+  background-color: transparent !important;
+  color: #FFFFFF !important; // Text color
+  font-size: 12px; // Button font size
+  font-weight: normal; // Button font weight
+  text-transform: none; // Capitalize text
+  margin-bottom: 1em;
+  border-radius: 5px; // Border radius
+}
+
+/* Optional: Hover state for "Text" Variant */
+.v-btn.v-btn--text:hover {
+  background-color: rgba(177, 31, 26, 0.1) !important; // Slightly transparent background on hover
+}
+.v-navigation-drawer {
+  width: 200px;
+  margin: 50px 100px 10px 10px ;
+}
+
+.v-footer {
+  height: 50px;
+  align-items: center;
+  margin: 10px ;
+}
+
+.mx-4 {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.my-4 {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.mt-4 {
+  margin-top: 10px;
+}
+
+
+
+
+
+  
