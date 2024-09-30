@@ -106,7 +106,7 @@
 </template>
 
 <script>
-import { authService } from '@/services/APIServices';
+import { authService } from '@/services/AuthAPIServices';
 import AlertComponent from '@/components/AlertComponents.vue'; // Ensure the path is correct
 
 export default {
