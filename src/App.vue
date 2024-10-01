@@ -16,31 +16,27 @@
       <v-row no-gutters>
         <!-- Sidebar (2 columns) -->
         <v-col cols="2" class="drawer-margin">
-          <v-navigation-drawer :elevation="2" app permanent>
+          <v-navigation-drawer :elevation="2">
             <v-list dense>
-              <v-list-item
-          
-                title="Home"
-                class="m-5"
-              ></v-list-item>
+              <v-list-item title="Home" class="home-drawer-item"></v-list-item>
               <v-divider></v-divider>
               <v-list-item
-                :class="{ 'primary': isActive('leaderboard') }"
+                :class="['drawer-item', { 'primary': isActive('leaderboard') }]"
                 @click="navigateTo('leaderboard')"
                 title="Leader Board"
               ></v-list-item>
               <v-list-item
-                :class="{ 'primary': isActive('assessments') }"
+                :class="['drawer-item', { 'primary': isActive('assessments') }]"
                 @click="navigateTo('assessments')"
                 title="Assessments"
               ></v-list-item>
               <v-list-item
-                :class="{ 'primary': isActive('responder-data') }"
+                :class="['drawer-item', { 'primary': isActive('responder-data') }]"
                 @click="navigateTo('responder-data')"
                 title="Responder Data"
               ></v-list-item>
               <v-list-item
-                :class="{ 'primary': isActive('incident-info') }"
+                :class="['drawer-item', { 'primary': isActive('incident-info') }]"
                 @click="navigateTo('incident-info')"
                 title="Incident Information"
               ></v-list-item>
@@ -48,7 +44,7 @@
           </v-navigation-drawer>
         </v-col>
 
-        <!-- Main Content (10 columns) -->
+        <!-- Main Content (12 columns) -->
         <v-col cols="12" class="main-content">
           <v-main>
             <v-card class="ma-10 d-flex flex-column justify-center align-center" elevation="1">
@@ -107,7 +103,7 @@ export default {
 }
 
 .drawer-margin {
-  margin: 10px; /* Drawer margin around the navigation drawer */
+  margin: 10px 0 40px 0; /* Drawer margin around the navigation drawer TRouBLe*/
 }
 
 .main-content {
@@ -115,12 +111,21 @@ export default {
 }
 
 .footer-margin {
-  margin: 10px 10px 10px 290px; /* Add margin around the footer */
+  margin: 10px 15px 10px 290px; /* Add margin around the footer */
 }
+.drawer-item {
+  margin: 10px 20px 10px 20px; /* Add vertical margin between items */
+  border-radius: 10px; /* Set border radius for items */
+  background-color: #f5f5f5; /* Inactive item background color */
+}
+.home-drawer-item {
+  margin: 30px 0px 10px; /* Add vertical margin between items */
+  border-radius: 10px; /* Set border radius for items */
 
+}
 /* Style for the active item */
 .primary {
   background-color: #B11F1A !important; /* Set active color to primary */
-  color: white !important; /* Set text color to white for visibility */
+  color: #F0F0F0 !important; /* Set text color to white for visibility */
 }
 </style>

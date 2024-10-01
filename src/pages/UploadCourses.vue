@@ -117,7 +117,7 @@
           </v-card-text>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn @click="saveCourse" color="red" dark>Save</v-btn>
+            <v-btn @click="saveCourse" color="primary" dark>Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
