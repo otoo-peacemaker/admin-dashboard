@@ -5,7 +5,7 @@ import router from './router';
 import { loadFonts } from './plugins/webfontloader'
 import './styles/global.scss'
 
-loadFonts()
+loadFonts().then(r => console.log(r))
 
 createApp(App)
   .use(router)
