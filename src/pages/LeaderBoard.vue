@@ -9,13 +9,14 @@
         :search="search"
         item-value="name"
         @update:options="loadItems"
-    ></v-data-table-server>
+    >
+
+    </v-data-table-server>
   </v-container>
 </template>
 
 <script>
 const data = [];
-
 const locations = ['Ghana', 'Nigeria', 'Kenya', 'Uganda', 'South Africa', 'Egypt', 'Morocco', 'Rwanda'];
 const injuryTypes = ['Arm', 'Leg', 'Head', 'Back', 'Chest', 'Neck', 'Foot', 'Hand'];
 
@@ -55,7 +56,6 @@ const FakeAPI = {
         }
 
         const paginated = items.slice(start, end);
-
         resolve({ items: paginated, total: items.length });
       }, 500);
     });
@@ -88,6 +88,32 @@ export default {
         this.loading = false;
       });
     },
+    sortTable(column) {
+      if (this.sortBy[0]?.key === column) {
+        this.sortBy[0].order = this.sortBy[0].order === 'asc' ? 'desc' : 'asc';
+      } else {
+        this.sortBy = [{ key: column, order: 'asc' }];
+      }
+      this.loadItems({ page: 1, itemsPerPage: this.itemsPerPage, sortBy: this.sortBy });
+    },
+    getSortIcon(column) {
+      const sort = this.sortBy.find(sort => sort.key === column);
+      return sort && sort.order === 'desc' ? 'mdi-arrow-down' : 'mdi-arrow-up';
+    }
   },
 };
 </script>
+<style scoped>
+.header-cell {
+  background-color: #B11F1A;
+  color: white;
+  padding: 16px;
+}
+.sort-icon {
+  cursor: pointer;
+  margin-right: 8px;
+}
+.elevation-1 {
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24);
+}
+</style>
