@@ -22,9 +22,6 @@ html {
     height: 2rem;
   }
 
-  /* global.scss */
-
-/* Default Button Style */
 .v-btn {
   background-color: #B11F1A !important; // Primary background color
   color: #FFFFFF !important; // Text color
@@ -47,6 +44,20 @@ html {
   box-shadow: none !important; // Remove shadow
   font-size: 13px; // Button font size
   font-weight: normal !important; // Normal font weight
+}
+
+//.v-table tbody tr td:nth-child(even) {
+//  background-color: #B71C1C;
+//}
+//
+//.v-table tbody tr td:nth-child(odd) {
+//  background-color: #880E4F;
+//}
+.v-data-table-header th {
+  background-color: #B11F1A;
+  color: white !important;
+  padding: 16px;
+  elevation: below;
 }
 
 .v-alert {

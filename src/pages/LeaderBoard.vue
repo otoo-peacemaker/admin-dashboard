@@ -1,5 +1,14 @@
+<!-- src/pages/LeaderBoard.vue -->
 <template>
   <v-container>
+    <v-text-field
+        v-model="searchQuery"
+        label="Search by Responder ID, Name, or Injury Type"
+        prepend-icon="mdi-magnify"
+        variant="outlined"
+        @input="handleSearch"
+        clearable
+    />
     <v-data-table-server
         v-model:items-per-page="itemsPerPage"
         :headers="headers"
@@ -8,14 +17,18 @@
         :loading="loading"
         :search="search"
         item-value="name"
+        class="v-data-table-header"
         @update:options="loadItems"
     >
 
     </v-data-table-server>
+
   </v-container>
 </template>
 
 <script>
+
+
 const data = [];
 const locations = ['Ghana', 'Nigeria', 'Kenya', 'Uganda', 'South Africa', 'Egypt', 'Morocco', 'Rwanda'];
 const injuryTypes = ['Arm', 'Leg', 'Head', 'Back', 'Chest', 'Neck', 'Foot', 'Hand'];
@@ -34,11 +47,8 @@ for (let i = 1; i <= 200; i++) {
   data.push(responder);
 }
 
-console.log(data);
-
-
 const FakeAPI = {
-  async fetch ({ page, itemsPerPage, sortBy }) {
+  async fetch({ page, itemsPerPage, sortBy }) {
     return new Promise(resolve => {
       setTimeout(() => {
         const start = (page - 1) * itemsPerPage;
@@ -51,21 +61,28 @@ const FakeAPI = {
           items.sort((a, b) => {
             const aValue = a[sortKey];
             const bValue = b[sortKey];
-            return sortOrder === 'desc' ? bValue - aValue : aValue - bValue;
+            if (typeof aValue === 'number' && typeof bValue === 'number') {
+              return sortOrder === 'desc' ? bValue - aValue : aValue - bValue;
+            }
+            return sortOrder === 'desc' ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue);
           });
         }
 
         const paginated = items.slice(start, end);
         resolve({ items: paginated, total: items.length });
-      }, 500);
+      }, 1000);
     });
   }
 };
 
 export default {
+  components: {
+  },
   data: () => ({
     name: 'LeaderBoard',
-    itemsPerPage: 5,
+    itemsPerPage: 10,
+    page: 1,
+    pageCount: 0,
     headers: [
       { title: 'ID', key: 'id', align: 'start', sortable: true },
       { title: 'Name', key: 'name', align: 'start', sortable: true },
@@ -78,42 +95,53 @@ export default {
     serverItems: [],
     loading: true,
     totalItems: 0,
+    sortBy: [],
   }),
   methods: {
-    loadItems({ page, itemsPerPage, sortBy }) {
+    loadItems({ page = this.page, itemsPerPage = this.itemsPerPage, sortBy = this.sortBy }) {
       this.loading = true;
       FakeAPI.fetch({ page, itemsPerPage, sortBy }).then(({ items, total }) => {
         this.serverItems = items;
         this.totalItems = total;
+
+        this.pageCount = Math.ceil(this.totalItems / this.itemsPerPage);
         this.loading = false;
       });
     },
-    sortTable(column) {
-      if (this.sortBy[0]?.key === column) {
-        this.sortBy[0].order = this.sortBy[0].order === 'asc' ? 'desc' : 'asc';
-      } else {
-        this.sortBy = [{ key: column, order: 'asc' }];
-      }
-      this.loadItems({ page: 1, itemsPerPage: this.itemsPerPage, sortBy: this.sortBy });
+    handleSearch() {
+      this.currentPage = 1; // Reset to the first page whenever a search is performed
+      this.loadItems({ page: this.currentPage, itemsPerPage: this.itemsPerPage });
     },
-    getSortIcon(column) {
-      const sort = this.sortBy.find(sort => sort.key === column);
-      return sort && sort.order === 'desc' ? 'mdi-arrow-down' : 'mdi-arrow-up';
-    }
+
   },
+  mounted() {
+    this.loadItems({ page: this.page, itemsPerPage: this.itemsPerPage, sortBy: this.sortBy });
+  }
 };
 </script>
+
 <style scoped>
-.header-cell {
-  background-color: #B11F1A;
-  color: white;
-  padding: 16px;
+
+:deep(.v-pagination) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
 }
-.sort-icon {
-  cursor: pointer;
-  margin-right: 8px;
+
+:deep(.v-pagination__item) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin: 0 5px;
+  border-radius: 50%;
+  background-color: #f5f5f5;
 }
-.elevation-1 {
-  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.12), 0px 1px 2px rgba(0, 0, 0, 0.24);
+
+:deep(.v-icon) {
+  vertical-align: middle;
+  font-size: 18px;
+  //line-height: 1.2;
 }
 </style>
