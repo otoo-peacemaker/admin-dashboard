@@ -1,14 +1,25 @@
 <!-- src/pages/LeaderBoard.vue -->
 <template>
   <v-container>
-    <v-text-field
-        v-model="searchQuery"
-        label="Search by Responder ID, Name, or Injury Type"
-        prepend-icon="mdi-magnify"
-        variant="outlined"
-        @input="handleSearch"
-        clearable
-    />
+    <v-card  flat>
+      <v-card-title class="d-flex align-center pe-2">
+        <v-icon icon="mdi-video-input-component"></v-icon> &nbsp;
+        Search for responder
+        <v-spacer></v-spacer>
+        <v-text-field
+            v-model="search"
+            density="compact"
+            label="Search"
+            prepend-inner-icon="mdi-magnify"
+            variant="solo-filled"
+            flat
+            hide-details
+            single-line
+            clearable
+            @input="handleSearch"
+        ></v-text-field>
+      </v-card-title>
+    </v-card>
     <v-data-table-server
         v-model:items-per-page="itemsPerPage"
         :headers="headers"
@@ -142,6 +153,6 @@ export default {
 :deep(.v-icon) {
   vertical-align: middle;
   font-size: 18px;
-  //line-height: 1.2;
+  line-height: 1.2;
 }
 </style>
