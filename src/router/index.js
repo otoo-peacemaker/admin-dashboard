@@ -131,10 +131,10 @@ const router = createRouter({
     routes,
 });
 
-// router.beforeEach((to, from, next) => {
-//     const isAuthenticated = !!localStorage.getItem('token'); // authentication check
-//     if (to.name !== 'LoginPage' && !isAuthenticated) next({ name: 'LoginPage' });
-//     else next();
-//   });
+router.beforeEach((to, from, next) => {
+    const isAuthenticated = !!localStorage.getItem('token'); // authentication check
+    if (to.name !== 'LoginPage' && !isAuthenticated) next({ name: 'LoginPage' });
+    else next();
+  });
 
 export default router;
