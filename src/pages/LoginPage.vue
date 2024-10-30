@@ -1,5 +1,6 @@
 <template>
   <v-layout>
+    
     <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
       <v-container class="d-flex align-center justify-center" style="height: 100vh">
         <v-card class="mx-auto" width="350" elevation="2">
@@ -23,6 +24,20 @@
             />
 
             <v-form ref="form" v-model="isFormValid" lazy-validation>
+              <!-- Fullname field -->
+              <v-text-field
+               v-if="!isLoginPage"
+                v-model="name"
+                :rules="nameRules"
+                label="Fullname"
+                hide-details="auto"
+                placeholder="username"
+                persistent-hint
+                variant="outlined"
+                class="mt-10"
+                @focus="setTouched('name')"
+              ></v-text-field>
+             
               <!-- Email field -->
               <v-text-field
                 v-model="email"
@@ -32,7 +47,7 @@
                 placeholder="user@gmail.com"
                 persistent-hint
                 variant="outlined"
-                class="mt-10"
+                class="mt-5"
                 @focus="setTouched('email')"
               ></v-text-field>
 
@@ -62,7 +77,6 @@
                 class="mb-5"
                 :type="showPassword ? 'text' : 'password'"
                 label="Confirm Password"
-
                 @focus="setTouched('confirmPassword')"
               >
                 <template v-slot:append-inner>
@@ -89,12 +103,12 @@
 
             <!-- Toggle between Login and Register -->
             <div class="d-flex justify-center mt-3">
-              <v-btn variant="text" size="small" @click="togglePage">
+              <v-btn variant="text" size="large" @click="togglePage">
                 <span>
-                  {{ isLoginPage ? "Don't have an account?" : 'Already have an account?' }}
+                  {{ isLoginPage ? "Don't have an account?  " : 'Already have an account?' }}
                 </span>
-                <span class="red--text">
-                  {{ isLoginPage ? ' Register Here' : ' Sign In' }}
+                <span class="red-text">
+                  {{ isLoginPage ? ' Register Here ' : ' Sign In' }}
                 </span>
               </v-btn>
             </div>
@@ -116,6 +130,7 @@ export default {
   },
   data() {
     return {
+      name:'',
       email: '',
       password: '',
       confirmPassword: '',
@@ -130,6 +145,9 @@ export default {
       },
       errorMessage: '', // Holds error messages
       successMessage: '', // Holds success messages
+      nameRules: [
+        value => (!this.touchedFields.name || !!value) || 'Username is required.',
+      ],
       emailRules: [
         value => (!this.touchedFields.email || !!value) || 'Email is required.',
         value => (!this.touchedFields.email || /.+@.+\..+/.test(value)) || 'Email must be valid.'
@@ -137,9 +155,9 @@ export default {
       passwordRules: [
         value => (!this.touchedFields.password || !!value) || 'Password is required.',
         value => (!this.touchedFields.password || value.length >= 8) || 'Password must be at least 8 characters long.',
-        value => (!this.touchedFields.password || /[A-Z]/.test(value)) || 'Password must contain at least one uppercase letter.',
-        value => (!this.touchedFields.password || /[0-9]/.test(value)) || 'Password must contain at least one number.',
-        value => (!this.touchedFields.password || /[@$!%*?&#]/.test(value)) || 'Password must contain at least one special character.'
+        // value => (!this.touchedFields.password || /[A-Z]/.test(value)) || 'Password must contain at least one uppercase letter.',
+        // value => (!this.touchedFields.password || /[0-9]/.test(value)) || 'Password must contain at least one number.',
+        // value => (!this.touchedFields.password || /[@$!%*?&#]/.test(value)) || 'Password must contain at least one special character.'
       ]
     };
   },
@@ -155,6 +173,7 @@ export default {
     },
 
     clearForm() {
+      this.name = '';
       this.email = '';
       this.password = '';
       this.confirmPassword = '';
@@ -178,41 +197,35 @@ export default {
 
       // Validate form before submitting
       if (form.validate()) {
-        this.loading = true;
-        this.errorMessage = '';
-        this.successMessage = '';
+      this.loading = true;
+      this.errorMessage = '';
+      this.successMessage = '';
 
-        try {
-          if (this.isLoginPage) {
-            const response = await authService.login(this.email, this.password);
-            authService.saveToken(response.token); // Save JWT token
-            this.successMessage = 'Login successful!';
-          } else {
-            const response = await authService.register(this.email, this.password, this.confirmPassword);
-            authService.saveToken(response.token); // Save JWT token
-            this.successMessage = 'Registration successful!';
-          }
-        } catch (error) {
-          this.errorMessage = error.message || 'An error occurred. Please try again.';
-        } finally {
-          this.loading = false;
-        }
-      } else {
-        console.log('Form validation failed.');
-      }
+  try {
+    let response;
+    if (this.isLoginPage) {
+      response = await authService.login(this.email, this.password);
+      authService.saveToken(response.token); // Save JWT token
+      this.successMessage = 'Login successful!';
+    } else {
+      response = await authService.register(this.email, this.password, this.confirmPassword);
+      authService.saveToken(response.token); // Save JWT token
+      this.successMessage = 'Registration successful!';
+    }
+  } catch (error) {
+    if (error.response && error.response.data && error.response.data.error) {
+      this.errorMessage = error.response.data.error.message;
+    } else {
+      this.errorMessage = error.message || 'An error occurred. Please try again.';
+    }
+  } finally {
+    this.loading = false;
+  }
+} else {
+  console.log('Form validation failed.');
+}
+
     }
   }
 }
 </script>
-
-<!-- <style scoped>
-/* Custom styles */
-.v-form {
-  max-width: 400px;
-  margin: 0 auto;
-}
-
-.v-btn {
-  width: 100%;
-}
-</style> -->

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an instance of axios
 const apiClient = axios.create({
-  baseURL: 'https://your-backend-url/api', // Replace with your backend URL
+  baseURL: 'https://dispatcher-backend-xgj5.onrender.com', 
   headers: {
     'Content-Type': 'application/json',
   },
@@ -33,7 +33,7 @@ apiClient.interceptors.response.use(
   },
   (error) => {
     // Handle token expiration or unauthorized access
-    if (error.response.status === 401) {
+    if (error.response.data.status === 401) {
       // Clear token and redirect to login page if token is expired or invalid
       localStorage.removeItem('token');
       window.location.href = '/login'; // Redirect to login page
@@ -50,24 +50,25 @@ export const authService = {
     try {
       const response = await apiClient.post('/auth/login', { email, password });
       const { token } = response.data;
-      // Save token to localStorage
       this.saveToken(token);
       return response.data;
     } catch (error) {
-      throw error.response?.data?.message || 'Login failed. Please try again.';
+      const apiError = error.response?.data?.error?.message || 'Login failed. Please try again.';
+      throw new Error(apiError);
     }
   },
 
   async register(email, password, confirmPassword) {
     try {
-      const response = await apiClient.post('/auth/register', {
+      const response = await apiClient.post('/auth/signup', {
         email,
         password,
         confirmPassword,
       });
       return response.data;
     } catch (error) {
-      throw error.response?.data?.message || 'Registration failed. Please try again.';
+      const apiError = error.response?.data?.error?.message || 'Registration failed. Please try again.';
+      throw new Error(apiError);
     }
   },
 

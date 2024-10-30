@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <!-- App Bar -->
-    <v-app-bar color="primary" :elevation="1" v-if="!isLoginPage">
+    <v-app-bar color="primary" :elevation="1" >
       <v-toolbar-title v-if="showTitle">SnooCODERED Admin Portal</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn icon v-if="showProfileIcon">
