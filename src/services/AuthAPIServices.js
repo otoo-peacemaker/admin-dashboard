@@ -53,21 +53,24 @@ export const authService = {
       this.saveToken(token);
       return response.data;
     } catch (error) {
+      console.log(apiClient.defaults.baseURL); // should log 'https://dispatcher-backend-xgj5.onrender.com'
+
       const apiError = error.response?.data?.error?.message || 'Login failed. Please try again.';
       throw new Error(apiError);
     }
   },
 
-  async register(email, password, confirmPassword) {
+  async register(username, email, phone, password) {
     try {
       const response = await apiClient.post('/auth/signup', {
+        username,
         email,
+        phone,
         password,
-        confirmPassword,
       });
       return response.data;
     } catch (error) {
-      const apiError = error.response?.data?.error?.message || 'Registration failed. Please try again.';
+      const apiError = error.response?.data?.message || 'Registration failed. Please try again.';
       throw new Error(apiError);
     }
   },

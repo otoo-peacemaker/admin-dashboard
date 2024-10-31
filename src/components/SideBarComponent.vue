@@ -30,6 +30,7 @@
 </template>
 
 <script>
+import { authService } from '@/services/AuthAPIServices'; // Import your auth service if it contains helper methods
 export default {
   props: ['showSidebar'],
   data() {
@@ -50,7 +51,10 @@ export default {
       return this.$route.meta.activeMenu === menuName;
     },
     logout() {
-      // Handle logout logic
+       // Clear the token from local storage
+      authService.logout();
+      // Redirect to the login page
+      this.$router.push({ name: 'LoginPage' });
     },
   },
 };

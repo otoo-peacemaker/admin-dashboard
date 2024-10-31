@@ -31,7 +31,7 @@
                 :rules="nameRules"
                 label="Fullname"
                 hide-details="auto"
-                placeholder="username"
+                placeholder="Enter fullname"
                 persistent-hint
                 variant="outlined"
                 class="mt-10"
@@ -49,6 +49,20 @@
                 variant="outlined"
                 class="mt-5"
                 @focus="setTouched('email')"
+              ></v-text-field>
+
+               <!-- Phone field -->
+               <v-text-field
+                v-if="!isLoginPage"
+                v-model="phone"
+                :rules="nameRules"
+                label="Phone number"
+                hide-details="auto"
+                placeholder="Enter phone number"
+                persistent-hint
+                variant="outlined"
+                class="mt-5"
+                @focus="setTouched('phone')"
               ></v-text-field>
 
               <!-- Password field -->
@@ -132,6 +146,7 @@ export default {
     return {
       name:'',
       email: '',
+      phone: '',
       password: '',
       confirmPassword: '',
       showPassword: false,
@@ -139,7 +154,9 @@ export default {
       isFormValid: false,
       isLoginPage: true,
       touchedFields: {
+        name:false,
         email: false,
+        phone: false,
         password: false,
         confirmPassword: false,
       },
@@ -147,6 +164,7 @@ export default {
       successMessage: '', // Holds success messages
       nameRules: [
         value => (!this.touchedFields.name || !!value) || 'Username is required.',
+        value => (!this.touchedFields.phone || !!value) || 'Phone number is required.',
       ],
       emailRules: [
         value => (!this.touchedFields.email || !!value) || 'Email is required.',
@@ -177,8 +195,9 @@ export default {
       this.email = '';
       this.password = '';
       this.confirmPassword = '';
-      this.touchedFields = { email: false, password: false, confirmPassword: false };
-      this.errorMessage = ''; // Clear error message when changing pages
+      this.touchedFields = { name: false, email: false, phone: false,password: false, confirmPassword: false };
+      this.errorMessage = ''; 
+      this.successMessage = ''; 
     },
 
     setTouched(field) {
@@ -193,39 +212,42 @@ export default {
     },
 
     async onSubmit() {
-      const form = this.$refs.form;
+  const form = this.$refs.form;
+  // Validate form before submitting
+  if (form.validate()) {
+    this.loading = true;
+    this.errorMessage = '';
+    this.successMessage = '';
 
-      // Validate form before submitting
-      if (form.validate()) {
-      this.loading = true;
-      this.errorMessage = '';
-      this.successMessage = '';
-
-  try {
-    let response;
-    if (this.isLoginPage) {
-      response = await authService.login(this.email, this.password);
-      authService.saveToken(response.token); // Save JWT token
-      this.successMessage = 'Login successful!';
-    } else {
-      response = await authService.register(this.email, this.password, this.confirmPassword);
-      authService.saveToken(response.token); // Save JWT token
-      this.successMessage = 'Registration successful!';
+    try {
+      let response;
+      if (this.isLoginPage) {
+        // Perform login
+        response = await authService.login(this.email, this.password);
+        authService.saveToken(response.data.token); // Save JWT token
+        this.successMessage = 'Login successful!';
+        // Redirect to dashboard after login
+        this.$router.push('/dashboard');
+      } else {
+        // Perform registration
+        response = await authService.register(this.name, this.email, this.phone, this.password);
+        this.successMessage = 'Registration successful!';
+        // Switch to login form after registration
+        this.isLoginPage = true;
+      }
+    } catch (error) {
+      if (error.response && error.response.data && error.response.data.error) {
+        this.errorMessage = error.response.data.error.message;
+      } else {
+        this.errorMessage = error.message || 'An error occurred. Please try again.';
+      }
+    } finally {
+      this.loading = false;
     }
-  } catch (error) {
-    if (error.response && error.response.data && error.response.data.error) {
-      this.errorMessage = error.response.data.error.message;
-    } else {
-      this.errorMessage = error.message || 'An error occurred. Please try again.';
-    }
-  } finally {
-    this.loading = false;
+  } else {
+    console.log('Form validation failed.');
   }
-} else {
-  console.log('Form validation failed.');
 }
-
-    }
   }
 }
 </script>
