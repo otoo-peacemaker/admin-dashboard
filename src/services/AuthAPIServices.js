@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create an instance of axios
 const apiClient = axios.create({
-  baseURL: 'https://dispatcher-backend-xgj5.onrender.com', 
+  baseURL: 'https://responder.onrender.com', 
   headers: {
     'Content-Type': 'application/json',
   },
@@ -48,7 +48,7 @@ apiClient.interceptors.response.use(
 export const authService = {
   async login(email, password) {
     try {
-      const response = await apiClient.post('/auth/login', { email, password });
+      const response = await apiClient.post('/admin/auth/login', { email, password });
       const { token } = response.data;
       this.saveToken(token);
       return response.data;
@@ -62,11 +62,12 @@ export const authService = {
 
   async register(username, email, phone, password) {
     try {
-      const response = await apiClient.post('/auth/signup', {
+      const response = await apiClient.post('/admin/auth/signup', {
         username,
         email,
         phone,
         password,
+        role:'Admin'
       });
       return response.data;
     } catch (error) {

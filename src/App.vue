@@ -40,7 +40,7 @@
 
 <script>
 import Sidebar from './components/SideBarComponent.vue';
-
+// import AssessmentTabsComponent from './components/AssessmentTabsComponent.vue';
 export default {
   name: 'App',
   components: { Sidebar },

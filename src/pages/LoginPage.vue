@@ -1,9 +1,9 @@
 <template>
   <v-layout>
     
-    <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
+    <v-main class="d-flex align-center justify-center" style="min-height: 350px">
       <v-container class="d-flex align-center justify-center" style="height: 100vh">
-        <v-card class="mx-auto" width="350" elevation="2">
+        <v-card class="mx-auto" width="400" elevation="2">
           <v-card-title class="justify-center">
             <h3>{{ isLoginPage ? 'Login' : 'Register' }}</h3>
           </v-card-title>

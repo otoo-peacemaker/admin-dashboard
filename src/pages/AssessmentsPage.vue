@@ -1,56 +1,123 @@
 <template>
-  <v-item-group mandatory>
-    <v-container>
-      <v-row>
-        <v-col
-          v-for="(card, index) in cards"
-          :key="index"
-          cols="12"
-          md="6"
-        >
-          <v-item v-slot="{ isSelected }">
-            <v-card
-              :color="isSelected ? 'primary' : 'primary'"
-              class="d-flex justify-center align-center"
-              height="141"
-              dark
-              @click="navigateTo(card.route)"
-              :style="{ width: '399px', borderRadius: '10px', opacity: '0.8' }"
-            >
-              <v-scroll-y-transition>
-                <div class="text-h5 flex-grow-1 text-center">
-                  {{ card.title }}
-                </div>
-              </v-scroll-y-transition>
-            </v-card>
-          </v-item>
-        </v-col>
-      </v-row>
-    </v-container>
-  </v-item-group>
+  <v-card>
+    <v-tabs
+      v-model="tab"
+      align-tabs="center"
+      hide-slider
+      grow
+    >
+      <v-tab
+        v-for="(tabLabel, index) in tabs"
+        :key="index"
+        :value="tabLabel.value"
+        :class="tabClass(tab === tabLabel.value)"
+        elevation="2"
+        grow
+      >
+        {{ tabLabel.label }}
+      </v-tab>
+    </v-tabs>
+
+    <v-card-text>
+      <v-tabs-window v-model="tab">
+        <v-tabs-window-item value="one">
+          <StatsBar :stats="statsData" />
+          <div>
+    <v-select
+      :items="items"
+      density="comfortable"
+      label="Select Assessment Type"
+      variant="outlined"
+    ></v-select>
+  </div>
+        </v-tabs-window-item>
+
+        <v-tabs-window-item value="two">
+          <StatsBar :stats="statsData" />
+          <p>Content for Upload Videos</p>
+        </v-tabs-window-item>
+
+        <v-tabs-window-item value="three">
+          <StatsBar :stats="statsData" />
+          <p>Content for Generate Access Code</p>
+        </v-tabs-window-item>
+      </v-tabs-window>
+    </v-card-text>
+  </v-card>
 </template>
 
 <script>
+import StatsBar from '@/components/StatsBar.vue'; // Ensure correct path
 export default {
-  name: 'AssessmentsPage',
+  components: {
+    StatsBar,
+  },
   data() {
     return {
-      // Array of cards with titles and routes
-      cards: [
-        { title: 'Upload Courses', route: 'UploadCourses' },
-        { title: 'Metrics', route: 'MetricsPage' },
-        { title: 'Generate Access Codes', route: 'GenerateAccessCodes' },
+      tab: 'one',
+      tabs: [
+        { label: 'Upload Assessment', value: 'one' },
+        { label: 'Upload Videos', value: 'two' },
+        { label: 'Generate Access Code', value: 'three' },
       ],
+      statsData: [
+        { label: 'Completed Test', value: '72/100' },
+        { label: 'Average Percentage', value: '75%' },
+        { label: 'Average Duration', value: '45 mins' },
+        { label: 'In Person Attendance', value: '70' },
+      ],
+      items: ['Pre-Course Assessment', 'Post Course Assessment', 'Demographic & Psychographic'],
     };
   },
   methods: {
-    navigateTo(route) {
-      this.$router.push({ name: route });
+    tabClass(isActive) {
+      return isActive ? 'active-tab' : 'inactive-tab';
     },
   },
 };
 </script>
 
 <style scoped>
-/* Custom styles for the cards if needed */
+.v-card {
+  width: 100%;
+}
+
+.v-tab {
+  flex: 1 1 auto; /* Ensure tabs evenly distribute */
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.active-tab {
+  background-color:  #b71c1c; /* Primary color for active tab */
+  color: white;
+}
+
+.inactive-tab {
+  background-color: #e0e0e0; /* Grey color for inactive tabs */
+  color: #757575;
+}
+
+.stats-bar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap; /* Adjusts to available width */
+  padding: 16px;
+  background-color: #b71c1c;
+}
+
+.stat-item {
+  flex: 1 1 calc(25% - 16px); /* Items share the space equally */
+  margin: 8px;
+  text-align: center;
+  color: white;
+}
+
+.stat-label {
+  font-weight: bold;
+}
+
+.stat-value {
+  font-size: 1.2em;
+}
 </style>
