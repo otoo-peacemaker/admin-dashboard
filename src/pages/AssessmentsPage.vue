@@ -1,11 +1,6 @@
 <template>
   <v-card>
-    <v-tabs
-      v-model="tab"
-      align-tabs="center"
-      hide-slider
-      grow
-    >
+    <v-tabs v-model="tab" align-tabs="center" hide-slider grow>
       <v-tab
         v-for="(tabLabel, index) in tabs"
         :key="index"
@@ -20,26 +15,17 @@
 
     <v-card-text>
       <v-tabs-window v-model="tab">
-        <v-tabs-window-item value="one">
+        <v-tabs-window-item v-for="(tabLabel, index) in tabs" :key="index" :value="tabLabel.value">
           <StatsBar :stats="statsData" />
-          <div>
-    <v-select
-      :items="items"
-      density="comfortable"
-      label="Select Assessment Type"
-      variant="outlined"
-    ></v-select>
-  </div>
-        </v-tabs-window-item>
-
-        <v-tabs-window-item value="two">
-          <StatsBar :stats="statsData" />
-          <p>Content for Upload Videos</p>
-        </v-tabs-window-item>
-
-        <v-tabs-window-item value="three">
-          <StatsBar :stats="statsData" />
-          <p>Content for Generate Access Code</p>
+          <template v-if="tabLabel.value === 'one'">
+            <UploadAssessment />
+          </template>
+          <template v-else-if="tabLabel.value === 'two'">
+            <p>Content for Upload Videos</p>
+          </template>
+          <template v-else-if="tabLabel.value === 'three'">
+            <p>Content for Generate Access Code</p>
+          </template>
         </v-tabs-window-item>
       </v-tabs-window>
     </v-card-text>
@@ -48,9 +34,12 @@
 
 <script>
 import StatsBar from '@/components/StatsBar.vue'; // Ensure correct path
+import UploadAssessment from '@/components/UploadAssessment.vue'; // New modular component
+
 export default {
   components: {
     StatsBar,
+    UploadAssessment,
   },
   data() {
     return {
@@ -66,7 +55,6 @@ export default {
         { label: 'Average Duration', value: '45 mins' },
         { label: 'In Person Attendance', value: '70' },
       ],
-      items: ['Pre-Course Assessment', 'Post Course Assessment', 'Demographic & Psychographic'],
     };
   },
   methods: {
@@ -89,7 +77,7 @@ export default {
 }
 
 .active-tab {
-  background-color:  #b71c1c; /* Primary color for active tab */
+  background-color: #b71c1c; /* Primary color for active tab */
   color: white;
 }
 
@@ -98,26 +86,4 @@ export default {
   color: #757575;
 }
 
-.stats-bar {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap; /* Adjusts to available width */
-  padding: 16px;
-  background-color: #b71c1c;
-}
-
-.stat-item {
-  flex: 1 1 calc(25% - 16px); /* Items share the space equally */
-  margin: 8px;
-  text-align: center;
-  color: white;
-}
-
-.stat-label {
-  font-weight: bold;
-}
-
-.stat-value {
-  font-size: 1.2em;
-}
 </style>
