@@ -84,9 +84,8 @@
   <script>
 //   import XLSX from 'xlsx';
 //   import { PDFDocument } from 'pdf-lib';
-import { uploadAssessment } from '@/services/AssessmentService';
+import { uploadAssessment } from '@/services/AssessmentAPIService';
 import AlertComponent from '@/components/AlertComponents.vue';
-
   
   export default {
     components: {

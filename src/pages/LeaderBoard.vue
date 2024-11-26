@@ -38,68 +38,63 @@
 </template>
 
 <script>
+import { getResponders } from '@/services/ResponderAPIService';
 
+const APICall = {
+  async fetch({ page, itemsPerPage, sortBy, search }) {
+    try {
+      const response = await getResponders(); // Fetch data from the backend
+      let data = response.data;
 
-const data = [];
-const locations = ['Ghana', 'Nigeria', 'Kenya', 'Uganda', 'South Africa', 'Egypt', 'Morocco', 'Rwanda'];
-const injuryTypes = ['Arm', 'Leg', 'Head', 'Back', 'Chest', 'Neck', 'Foot', 'Hand'];
+      // Apply search filter
+      if (search) {
+        data = data.filter((responder) =>
+          Object.values(responder)
+            .join(' ')
+            .toLowerCase()
+            .includes(search.toLowerCase())
+        );
+      }
 
-for (let i = 1; i <= 200; i++) {
-  const countryCode = locations[Math.floor(Math.random() * locations.length)].substring(0, 2).toUpperCase();
-  const responderId = `${countryCode}-LFR-${String(i).padStart(4, '0')}`;
-  const responder = {
-    id: responderId,
-    name: `Responder ${i}`,
-    noOfEmergencies: Math.floor(Math.random() * 300) + 50, // Random number between 50 and 350
-    ranking: Math.floor(Math.random() * 10) + 1,           // Random rank between 1 and 10
-    location: locations[Math.floor(Math.random() * locations.length)],
-    injuryType: injuryTypes[Math.floor(Math.random() * injuryTypes.length)],
-  };
-  data.push(responder);
-}
+      // Apply sorting
+      if (sortBy.length) {
+        const sortKey = sortBy[0].key;
+        const sortOrder = sortBy[0].order;
+        data.sort((a, b) => {
+          const aValue = a[sortKey];
+          const bValue = b[sortKey];
+          if (typeof aValue === 'number' && typeof bValue === 'number') {
+            return sortOrder === 'desc' ? bValue - aValue : aValue - bValue;
+          }
+          return sortOrder === 'desc' ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue);
+        });
+      }
 
-const FakeAPI = {
-  async fetch({ page, itemsPerPage, sortBy }) {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        const start = (page - 1) * itemsPerPage;
-        const end = start + itemsPerPage;
-        const items = data.slice();
+      // Apply pagination
+      const start = (page - 1) * itemsPerPage;
+      const end = start + itemsPerPage;
+      const paginated = data.slice(start, end);
 
-        if (sortBy.length) {
-          const sortKey = sortBy[0].key;
-          const sortOrder = sortBy[0].order;
-          items.sort((a, b) => {
-            const aValue = a[sortKey];
-            const bValue = b[sortKey];
-            if (typeof aValue === 'number' && typeof bValue === 'number') {
-              return sortOrder === 'desc' ? bValue - aValue : aValue - bValue;
-            }
-            return sortOrder === 'desc' ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue);
-          });
-        }
-
-        const paginated = items.slice(start, end);
-        resolve({ items: paginated, total: items.length });
-      }, 1000);
-    });
-  }
+      return { items: paginated, total: data.length };
+    } catch (error) {
+      console.error('Error fetching responders:', error);
+      throw new Error('Failed to fetch responders');
+    }
+  },
 };
 
 export default {
-  components: {
-  },
   data: () => ({
     name: 'LeaderBoard',
     itemsPerPage: 10,
     page: 1,
     pageCount: 0,
     headers: [
-      { title: 'ID', key: 'id', align: 'start', sortable: true },
-      { title: 'Name', key: 'name', align: 'start', sortable: true },
-      { title: 'No. of Emergencies', key: 'noOfEmergencies', align: 'center', sortable: true },
-      { title: 'Ranking', key: 'ranking', align: 'center', sortable: true },
-      { title: 'Location', key: 'location', align: 'center', sortable: false },
+      { title: 'ID', key: 'responderId', align: 'start', sortable: true },
+      { title: 'Name', key: 'username', align: 'start', sortable: true },
+      { title: 'No. of Emergencies', key: 'noOfEmergencies', align: 'center', sortable: false },
+      { title: 'Ranking', key: 'ranking', align: 'center', sortable: false },
+      { title: 'Location', key: 'country', align: 'center', sortable: false },
       { title: 'Injury Type', key: 'injuryType', align: 'center', sortable: false },
     ],
     search: '',
@@ -111,7 +106,7 @@ export default {
   methods: {
     loadItems({ page = this.page, itemsPerPage = this.itemsPerPage, sortBy = this.sortBy }) {
       this.loading = true;
-      FakeAPI.fetch({ page, itemsPerPage, sortBy }).then(({ items, total }) => {
+      APICall.fetch({ page, itemsPerPage, sortBy, search: this.search }).then(({ items, total }) => {
         this.serverItems = items;
         this.totalItems = total;
 
@@ -120,16 +115,16 @@ export default {
       });
     },
     handleSearch() {
-      this.currentPage = 1; // Reset to the first page whenever a search is performed
-      this.loadItems({ page: this.currentPage, itemsPerPage: this.itemsPerPage });
+      this.page = 1; // Reset to the first page whenever a search is performed
+      this.loadItems({ page: this.page, itemsPerPage: this.itemsPerPage });
     },
-
   },
   mounted() {
     this.loadItems({ page: this.page, itemsPerPage: this.itemsPerPage, sortBy: this.sortBy });
-  }
+  },
 };
 </script>
+
 
 <style scoped>
 

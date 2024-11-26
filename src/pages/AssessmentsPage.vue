@@ -24,7 +24,7 @@
             <p>Content for Upload Videos</p>
           </template>
           <template v-else-if="tabLabel.value === 'three'">
-            <p>Content for Generate Access Code</p>
+            <GenerateAccessCode />
           </template>
         </v-tabs-window-item>
       </v-tabs-window>
@@ -34,12 +34,14 @@
 
 <script>
 import StatsBar from '@/components/StatsBar.vue'; // Ensure correct path
-import UploadAssessment from '@/components/UploadAssessment.vue'; // New modular component
+import UploadAssessment from '@/components/UploadAssessment.vue'; 
+import GenerateAccessCode from '@/components/GenerateAccessCode.vue'; 
 
 export default {
   components: {
     StatsBar,
     UploadAssessment,
+    GenerateAccessCode
   },
   data() {
     return {
