@@ -1,6 +1,6 @@
 import {createRouter, createWebHistory} from 'vue-router';
 import LoginPage from '@/pages/LoginPage.vue';
-import DashboardPage from '@/pages/DashboardPage.vue';
+// import DashboardPage from '@/pages/DashboardPage.vue';
 import LeaderBoard from '@/pages/LeaderBoard.vue';
 import AssessmentsPage from '@/pages/AssessmentsPage.vue';
 import ResponderData from '@/pages/ResponderData.vue';
@@ -29,7 +29,7 @@ const routes = [
     {
         path: '/dashboard',
         name: 'Dashboard',
-        component: DashboardPage,
+        component: LeaderBoard,
         meta: {
             showTitle: true,
             showProfileIcon: true,

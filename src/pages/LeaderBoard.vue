@@ -91,10 +91,10 @@ export default {
     pageCount: 0,
     headers: [
       { title: 'ID', key: 'responderId', align: 'start', sortable: true },
-      { title: 'Name', key: 'username', align: 'start', sortable: true },
+      { title: 'Name', key: 'username', align: 'start', sortable: false },
       { title: 'No. of Emergencies', key: 'noOfEmergencies', align: 'center', sortable: false },
       { title: 'Ranking', key: 'ranking', align: 'center', sortable: false },
-      { title: 'Location', key: 'country', align: 'center', sortable: false },
+      { title: 'Location', key: 'country', align: 'center', sortable: true },
       { title: 'Injury Type', key: 'injuryType', align: 'center', sortable: false },
     ],
     search: '',

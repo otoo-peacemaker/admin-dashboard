@@ -21,7 +21,7 @@
             <UploadAssessment />
           </template>
           <template v-else-if="tabLabel.value === 'two'">
-            <p>Content for Upload Videos</p>
+            <CourseUploadComponent />
           </template>
           <template v-else-if="tabLabel.value === 'three'">
             <GenerateAccessCode />
@@ -36,12 +36,14 @@
 import StatsBar from '@/components/StatsBar.vue'; // Ensure correct path
 import UploadAssessment from '@/components/UploadAssessment.vue'; 
 import GenerateAccessCode from '@/components/GenerateAccessCode.vue'; 
+import CourseUploadComponent from '@/components/CourseUploadComponent.vue';
 
 export default {
   components: {
     StatsBar,
     UploadAssessment,
-    GenerateAccessCode
+    GenerateAccessCode,
+    CourseUploadComponent
   },
   data() {
     return {
