@@ -7,7 +7,7 @@
         :value="tabLabel.value"
         :class="tabClass(tab === tabLabel.value)"
         elevation="2"
-        grow
+        grow="true"
       >
         {{ tabLabel.label }}
       </v-tab>

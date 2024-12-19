@@ -58,33 +58,45 @@
       @close="showAlert = false"
     />
     <!-- List of uploaded assessments -->
-    <div v-if="uploadedAssessments.length" class="uploaded-assessments">
-  <h3>Uploaded Assessments:</h3>
-  <ul>
-    <li v-for="(assessment, index) in uploadedAssessments" :key="index">
-      <strong>Type:</strong> {{ assessment.type }} <br />
-      <strong>Uploaded File:</strong> {{ assessment.fileName }} <br />
-      <span>Uploaded on {{ assessment.uploadDate }}</span>
-      <v-btn
-        variant="text"
-        density="compact"
-        size="Larger"
-        style="color: green !important"
-        @click="previewFile(assessment.pdfUrl)"
-      >
-        Preview Assessment
-      </v-btn>
-      <v-btn
-        variant="text"
-        density="compact"
-        size="smaller"
-        style="color: red !important; margin-left: 8px;"
-        @click="deleteAssessments(assessment.type)"
-      >
-        Delete
-      </v-btn>
-    </li>
-  </ul>
+<div v-if="uploadedAssessments.length" class="uploaded-assessments mt-5">
+  <h3 class="mb-10 mt-10 ml-10">Uploaded Assessments</h3>
+  <v-row dense>
+    <v-col
+      v-for="(assessment, index) in uploadedAssessments"
+      :key="index"
+      cols="12"
+    >
+      <v-card class="pa-3 mb-4 mr-8 ml-8"  outlined>
+        <v-card-title class="text-h6">
+          Assessment Type: {{ assessment.type }}
+        </v-card-title>
+        <v-card-text>
+          <strong>Uploaded File:</strong> {{ assessment.fileName }} <br />
+          <span>Uploaded on: {{ assessment.uploadDate }}</span>
+        </v-card-text>
+        <v-card-actions class="close-container">
+          <v-btn
+            variant="text"
+            density="compact"
+            size="large"
+            color="green"
+            @click="previewFile(assessment.pdfUrl)"
+          >
+            Preview Assessment
+          </v-btn>
+          <v-btn
+            variant="text"
+            density="compact"
+            size="large"
+            color="red"
+            @click="deleteAssessments(assessment.type)"
+          >
+            Delete
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
 </div>
 
     <!-- PDF preview -->
@@ -335,7 +347,17 @@ export default {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   position: relative;
 }
+.uploaded-assessments .v-card {
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+.uploaded-assessments .v-card {
+  transition: transform 0.4s, box-shadow 0.3s;
+}
 
+.uploaded-assessments .v-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
 .close-btn {
   position: absolute;
   top: 5px;
