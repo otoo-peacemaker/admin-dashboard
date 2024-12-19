@@ -1,189 +1,275 @@
 <template>
-    <div>
-        
-      <v-select
-        v-model="selectedAssessment"
-        :items="items"
-        density="comfortable"
-        label="Select Assessment Type"
-        variant="outlined"
-        class="mt-10"
-        :rules="assessmentRules"
-        required
-      ></v-select>
-  
-      <div class="file-upload-card">
-        <v-btn
-          variant="text"
-          size="large"
-          class="file-upload-btn"
-          @click="triggerFileUpload"
-        >
-          <v-icon top>mdi-file</v-icon>
-          Click Here to Upload Files
-        </v-btn>
-        <input
-          type="file"
-          ref="fileInput"
-          accept=".xlsx, .xls"
-          style="display: none"
-          @change="handleFileUpload"
-        />
-        <p>
-          Upload a <strong>Excel</strong> table in the format below:
-          <br />
-          <span>Question | Options | Correct_Answers</span>
-        </p>
-        <v-btn
-          :loading="loading"
-          variant="toned"
-          density="compact"
-          size="Larger"
-          :disabled="!file || !selectedAssessment"
-          @click="saveFile"
-        >
-          Save
-        </v-btn>
-      </div>
-  
-      <div v-if="fileName" class="file-upload-div">
-        <p>
-          <strong>Assessment Type:</strong> {{ selectedAssessment }}
-          <br />
-          <strong>Uploaded File:</strong> {{ fileName }}
-          <br />
-          <span>Uploaded on {{ uploadDate }}</span>
-        </p>
-  
-        <!-- Preview button -->
-        <v-btn
-          variant="text"
-          density="compact"
-          size="Larger"
-          style="color: green !important"
-          @click="previewFile"
-        >
-          Preview Assessment
-        </v-btn>
-        <!-- PDF preview section -->
-        <div v-if="pdfUrl" class="pdf-preview">
-          <embed :src="pdfUrl" width="100%" height="500px" />
-        </div>
-      </div>
-         <!-- Alert Component -->
-    <AlertComponent
+  <div>
+    
+    <!-- Dropdown to select assessment type -->
+    <v-select
+      ref="assessmentSelect"
+      v-model="selectedAssessment"
+      :items="items"
+      density="comfortable"
+      label="Select Assessment Type"
+      variant="outlined"
+      class="mt-10"
+      :rules="assessmentRules"
+      required="true"
+    ></v-select>
+
+    <!-- File upload card -->
+    <div class="file-upload-card">
+      <v-btn
+        variant="text"
+        size="large"
+        class="file-upload-btn"
+        @click="triggerFileUpload"
+      >
+        <v-icon top>mdi-file</v-icon>
+        Click Here to Upload Files
+      </v-btn>
+      <input
+        type="file"
+        ref="fileInput"
+        accept=".xlsx, .xls"
+        style="display: none"
+        @change="handleFileUpload"
+      />
+      <p>
+        Upload a <strong>Excel</strong> table in the format below:
+        <br />
+        <span>Question | Options | Correct_Answers</span>
+      </p>
+      <v-btn
+        :loading="loading"
+        variant="toned"
+        density="compact"
+        size="Larger"
+        :disabled="!file || !selectedAssessment"
+        @click="saveFile"
+      >
+        Save
+      </v-btn>
+    </div>
+ <!-- Alert Component -->
+ <AlertComponent
       v-if="showAlert"
       :alertType="alertType"
       :message="alertMessage"
       :isVisible="showAlert"
+      class="m-10"
       @close="showAlert = false"
     />
-    </div>
-  </template>
+    <!-- List of uploaded assessments -->
+    <div v-if="uploadedAssessments.length" class="uploaded-assessments">
+  <h3>Uploaded Assessments:</h3>
+  <ul>
+    <li v-for="(assessment, index) in uploadedAssessments" :key="index">
+      <strong>Type:</strong> {{ assessment.type }} <br />
+      <strong>Uploaded File:</strong> {{ assessment.fileName }} <br />
+      <span>Uploaded on {{ assessment.uploadDate }}</span>
+      <v-btn
+        variant="text"
+        density="compact"
+        size="Larger"
+        style="color: green !important"
+        @click="previewFile(assessment.pdfUrl)"
+      >
+        Preview Assessment
+      </v-btn>
+      <v-btn
+        variant="text"
+        density="compact"
+        size="smaller"
+        style="color: red !important; margin-left: 8px;"
+        @click="deleteAssessments(assessment.type)"
+      >
+        Delete
+      </v-btn>
+    </li>
+  </ul>
+</div>
+
+    <!-- PDF preview -->
+<!-- PDF preview modal -->
+<div v-if="currentPdfUrl" class="pdf-modal">
+  <div class="pdf-modal-content">
+    <v-btn
+      variant="text"
+      size="large"
+      color="red"
+      @click="closePreview"
+      class="close-btn"
+    >
+      Close
+    </v-btn>
+    <iframe :src="currentPdfUrl" width="100%" height="750px"></iframe>
+  </div>
+</div>
+   
+  </div>
+</template>
   
-  <script>
-//   import XLSX from 'xlsx';
-//   import { PDFDocument } from 'pdf-lib';
-import { uploadAssessment } from '@/services/AssessmentAPIService';
-import AlertComponent from '@/components/AlertComponents.vue';
-  
-  export default {
-    components: {
-        AlertComponent
+<script>
+import { uploadAssessment, deleteAssessment } from "@/services/AssessmentAPIService";
+import AlertComponent from "@/components/AlertComponents.vue";
+export default {
+  components: {
+    AlertComponent,
+  },
+
+  data() {
+    return {
+      items: [
+        "Survey",
+        "Pre-Course Assessment",
+        "Post Course Assessment",
+        "Demographic & Psychographic",
+      ],
+      selectedAssessment: "",
+      file: null,
+      fileName: "",
+      uploadDate: "",
+      uploadClicked: false,
+      uploadedAssessments: [], // Array to store details of uploaded assessments
+      currentPdfUrl: "", // For previewing the selected PDF
+      showAlert: false,
+      alertType: "success",
+      alertMessage: "",
+      loading: false,
+    };
+  },
+
+  computed: {
+    assessmentRules() {
+    return [
+      (value) =>
+        !!value || "Please select an assessment type before uploading files.",
+    ];
+  },
+    
+  },
+  mounted() {
+    this.loadAssessmentsFromLocalStorage();
+  },
+  methods: {
+        // Save assessments to local storage
+        saveToLocalStorage() {
+      localStorage.setItem(
+        "uploadedAssessments",
+        JSON.stringify(this.uploadedAssessments)
+      );
     },
-    data() {
-      return {
-        items: [
-          'Survey',
-          'Pre-Course Assessment',
-          'Post Course Assessment',
-          'Demographic & Psychographic',
-        ],
-        selectedAssessment: '', // Stores selected assessment type
-        file: null, // Stores the uploaded file
-        fileName: '', // Stores the file name for display
-        uploadDate: '', // Stores the upload date for display
-        uploadClicked: false, // Flag to track if upload button has been clicked
-        pdfUrl: '', // The URL of the generated PDF for preview
-        showAlert: false, // Controls visibility of the alert
-        alertType: 'success', // Type of the alert (success, info, warning, error)
-        alertMessage: '', // Message for the alert
-        loading: false, // Controls loading state for the save button
-      };
+
+    // Load assessments from local storage
+    loadAssessmentsFromLocalStorage() {
+      const storedAssessments = localStorage.getItem("uploadedAssessments");
+      if (storedAssessments) {
+        this.uploadedAssessments = JSON.parse(storedAssessments);
+      }
     },
-    computed: {
-      assessmentRules() {
-        return this.uploadClicked && !this.selectedAssessment
-          ? [(v) => !!v || 'Please select an assessment type.']
-          : []; // No rules if upload button hasn't been clicked
-      },
+    triggerFileUpload() {
+    this.uploadClicked = true; // Set the flag for computed rule reevaluation
+    // Validate the v-select manually
+    const isValid = this.$refs.assessmentSelect.validate();
+    // If validation fails, stop the file upload
+    if (!isValid) {
+      console.log("Validation failed. Please select an assessment type.");
+      return;
+    }
+    // Proceed with file input click if validation passes
+    this.$refs.fileInput.click();
+  },
+    handleFileUpload(event) {
+      const uploadedFile = event.target.files[0];
+      if (uploadedFile && this.isExcelFile(uploadedFile)) {
+        this.file = uploadedFile;
+        this.fileName = `${this.selectedAssessment}_${uploadedFile.name}`;
+        this.uploadDate = new Date().toLocaleString();
+      } else {
+        this.resetFile();
+        alert("Please upload a valid Excel file (.xls or .xlsx).");
+      }
     },
-    methods: {
-      triggerFileUpload() {
-        this.uploadClicked = true;
-        if (!this.selectedAssessment) {
-          this.$refs.fileInput.blur();
-        } else {
-          this.$refs.fileInput.click();
-        }
-      },
-      handleFileUpload(event) {
-        const uploadedFile = event.target.files[0];
-        if (uploadedFile && this.isExcelFile(uploadedFile)) {
-          this.file = uploadedFile;
-          this.fileName = `${this.selectedAssessment}_${uploadedFile.name}`;
-          this.uploadDate = new Date().toLocaleString(); // Save current date/time
-          this.pdfUrl = ''; // Reset PDF URL when a new file is uploaded
-        } else {
-          this.resetFile();
-          alert('Please upload a valid Excel file (.xls or .xlsx).');
-        }
-      },
-      isExcelFile(file) {
-        const validExtensions = [
-          'application/vnd.ms-excel',
-          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-        ];
-        return validExtensions.includes(file.type);
-      },
-      resetFile() {
-        this.file = null;
-        this.fileName = '';
-      },
-      async saveFile() {
+    isExcelFile(file) {
+      const validExtensions = [
+        "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      ];
+      return validExtensions.includes(file.type);
+    },
+    resetFile() {
+      this.file = null;
+      this.fileName = "";
+    },
+    async saveFile() {
       if (this.file && this.selectedAssessment) {
         this.loading = true;
-        let response;
         try {
-          // Call the API service to upload the assessment
-        
-      response = await uploadAssessment(this.selectedAssessment, this.file);
-          this.showAlertMessage('success', `File "${this.selectedAssessment}" ${response.message}`);
+          // Call the API to upload the assessment
+          const response = await uploadAssessment(
+            this.selectedAssessment,
+            this.file
+          );
+
+          if(response['status']){
+            this.showAlertMessage("success", response['message']);
+          // Extract PDF URL from response and add to the list
+          this.uploadedAssessments.push({
+            type: this.selectedAssessment,
+            fileName: this.fileName,
+            uploadDate: this.uploadDate,
+            pdfUrl: response['pdfUrl'],
+          });
+            this.saveToLocalStorage()
+            this.resetFile(); // Reset file input after successful upload
+          }else{
+            this.showAlertMessage("error", response['message']);
+          }
+         
         } catch (error) {
-          console.error('Error during upload:', error);
-          this.showAlertMessage('error', "Error uploading file, Please try again");
-        }finally {
-          this.loading = false; // Stop loading spinner
+          this.showAlertMessage("error", error);
+        } finally {
+          this.loading = false;
         }
       } else {
-        this.showAlertMessage('warning', 'Please select an assessment type and upload a file.');
-        this.loading = false;
+        this.showAlertMessage(
+          "warning",
+          "Please select an assessment type and upload a file."
+        );
       }
+    },
+        // Delete assessments by type and update local storage
+      async deleteAssessments(type) {
+        this.loading = true;
+        try{
+         const response =  await deleteAssessment(type);
+         if(response['status']){
+        this.showAlertMessage("success", response['message']);
+        this.uploadedAssessments = this.uploadedAssessments.filter((assessment) => assessment.type !== type);
+        this.saveToLocalStorage();
+         }else{
+          this.showAlertMessage("error", response['message']);
+         }
+        }catch(error){
+          this.showAlertMessage("error", error);
+        }finally {
+          this.loading = false;
+        }
+
     },
     showAlertMessage(type, message) {
       this.alertType = type;
       this.alertMessage = message;
       this.showAlert = true;
     },
-      async previewFile() {
-         if (!this.file) {
-    alert('Please upload a file before previewing.');
-    return;
-  }
-}
+    previewFile(pdfUrl) {
+      this.currentPdfUrl = pdfUrl;
     },
-  };
-  </script>
+    closePreview() {
+    this.currentPdfUrl = "";
+  },
+  },
+};
+</script>
+
   <style scoped>
   .file-upload-card {
     display: flex;
@@ -214,8 +300,47 @@ import AlertComponent from '@/components/AlertComponents.vue';
   .file-upload-card p {
     margin-left: 1px;
   }
-  .pdf-preview {
-    margin-top: 20px;
-  }
+
+.pdf-preview canvas {
+  max-width: 100%;
+  margin: auto;
+  display: block;
+}
+
+.close-container {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.pdf-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.pdf-modal-content {
+  background: #fff; /* White background for the modal content */
+  border-radius: 8px;
+  padding: 50px 20px 20px;
+  width: 90%;
+  max-width: 900px; /* Set a max width for larger screens */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  z-index: 1100;
+}
   </style>
   

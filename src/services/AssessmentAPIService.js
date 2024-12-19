@@ -39,8 +39,9 @@ export const uploadAssessment = async (assessmentType, file) => {
     });
     return response.data;
   } catch (error) {
+
     console.error('Error uploading assessment:', error?.response?.data || error.message);
-    throw new Error(error?.response?.data?.message || 'Error uploading assessment');
+    throw new Error(error?.response?.data?.error ||error?.response?.data?.message || 'Error uploading assessment');
   }
 };
 
@@ -75,12 +76,12 @@ export const getAssessments = async () => {
 };
 
 // Function to delete an assessment
-export const deleteAssessment = async (assessmentId) => {
+export const deleteAssessment = async (assessmentType) => {
   try {
-    const response = await apiClient.delete(`/delete/${assessmentId}`);
+    const response = await apiClient.delete(`/${assessmentType}`);
     return response.data;
   } catch (error) {
     console.error('Error deleting assessment:', error?.response?.data || error.message);
-    throw new Error(error?.response?.data?.message || 'Error deleting assessment');
+    throw new Error(error?.response?.data?.message ||error?.response?.data?.message|| 'Error deleting assessment');
   }
 };
