@@ -23,7 +23,7 @@ export const uploadAssessment = async (assessmentType, file) => {
     'Survey': '/survey',
     'Pre-Course Assessment': '/assessment',
     'Post Course Assessment': '/assessment',
-    'Demographic & Psychographic': '/demographics',
+    'Demographic & Psychographic': '/survey',//todo: 
     default: '/default-assessment',
   };
 
