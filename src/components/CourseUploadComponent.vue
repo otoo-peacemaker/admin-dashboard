@@ -50,17 +50,17 @@
 
       <!-- Upload and Save Section (same row) -->
       <div class="upload-save-section">
-        <button class="upload-btn" @click="handleFileUpload" :disabled="isLoading">
+        <v-btn variant="outline" size="Larger" @click="handleFileUpload" :disabled="isLoading">
           Click Here to Upload Files
-        </button>
-
+        </v-btn>
+        
         <div class="buttons-right">
-          <button class="update-btn" @click="updateCourse" :disabled="!isEditing || isLoading">
+          <v-btn variant="outline" size="Larger" @click="updateCourse" :disabled="!isEditing || isLoading">
             Update
-          </button>
-          <button class="save-btn" @click="saveCourse" :disabled="isLoading">
+          </v-btn>
+          <v-btn variant="elevated" size="Larger" @click="saveCourse" :disabled="isLoading">
             Save
-          </button>
+          </v-btn>
         </div>
       </div>
 
@@ -84,7 +84,6 @@
       <div class="video-preview-container">
         <video
           controls
-          autoplay
           :src="course.videoFile"
           class="video-preview"
         >
@@ -93,8 +92,14 @@
       </div>
             <!-- Actions -->
             <div class="course-actions">
-              <button class="edit-btn" @click="editCourse(index)">Edit</button>
-              <button class="delete-btn" @click="deleteCourse(course.id)">Delete</button>
+              <v-btn variant="text" size="Larger" @click="editCourse(index)">Edit</v-btn>
+              <v-btn
+                variant="flat"
+                size="medium"
+                @click="deleteCourse(course.id)"
+              >
+                Delete
+              </v-btn>
             </div>
           </div>
         </draggable>
@@ -108,6 +113,9 @@
 import { uploadCourse, getCourses, reorderCourses, updateCourse, deleteCourse } from '@/services/CourseAPIServices';
 import { VueDraggableNext } from 'vue-draggable-next';
 import AlertComponent from '@/components/AlertComponents.vue';
+// // Import a polyfill (if needed)
+// import ResizeObserver from 'resize-observer-polyfill';
+// window.ResizeObserver = ResizeObserver;
 
 export default {
   components: {
@@ -116,6 +124,7 @@ export default {
   },
   data() {
     return {
+      videoFileUrl: "https://sfo3.digitaloceanspaces.com/iresponder/courses/df771216-c707-4b6a-a25a-62eda67346a8-compressed.mp4",
       courseTitle: '',
       courseObjectives: '',
       courseDuration: '',
@@ -140,6 +149,7 @@ export default {
         const response = await getCourses();
         if (response.status) {
           this.courses = response.data;
+          console.log(this.courses)
         }
       } catch (error) {
         console.error('Error fetching courses:', error);
@@ -294,7 +304,7 @@ export default {
 <style scoped>
 /* Loading spinner styling */
 .loading-spinner {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -319,6 +329,7 @@ export default {
   border-radius: 5px;
   border: 1px solid #ccc;
   width: 200px;
+  color: black;
 }
 .course-actions {
   display: flex;
@@ -491,6 +502,10 @@ export default {
 .video-preview-container {
   margin-top: 5px;
   text-align: right;
+  width: 100%;
+  max-width: 300px;
+  align-self: end;
+  overflow: hidden;
 }
 
 .video-preview {

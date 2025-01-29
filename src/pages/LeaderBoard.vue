@@ -3,7 +3,7 @@
   <v-container>
     <v-card  flat>
       <v-card-title class="d-flex align-center pe-2">
-        <v-icon icon="mdi-video-input-component"></v-icon> &nbsp;
+        <v-icon icon="mdi-video-input-component"></v-icon>
         Search for responder
         <v-spacer></v-spacer>
         <v-text-field
@@ -11,7 +11,7 @@
             density="compact"
             label="Search"
             prepend-inner-icon="mdi-magnify"
-            variant="solo-filled"
+            variant="outlined"
             flat
             hide-details
             single-line
@@ -45,7 +45,7 @@ const APICall = {
     try {
       const response = await getResponders(); // Fetch data from the backend
       let data = response.data;
-
+      console.log(data);
       // Apply search filter
       if (search) {
         data = data.filter((responder) =>
@@ -94,8 +94,7 @@ export default {
       { title: 'Name', key: 'username', align: 'start', sortable: false },
       { title: 'No. of Emergencies', key: 'noOfEmergencies', align: 'center', sortable: false },
       { title: 'Ranking', key: 'ranking', align: 'center', sortable: false },
-      { title: 'Location', key: 'country', align: 'center', sortable: true },
-      { title: 'Injury Type', key: 'injuryType', align: 'center', sortable: false },
+      { title: 'Location', key: 'country', align: 'center', sortable: true }
     ],
     search: '',
     serverItems: [],

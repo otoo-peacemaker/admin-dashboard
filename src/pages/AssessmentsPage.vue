@@ -33,14 +33,14 @@
 </template>
 
 <script>
-import StatsBar from '@/components/StatsBar.vue'; // Ensure correct path
+// import StatsBar from '@/components/StatsBar.vue'; // Ensure correct path
 import UploadAssessment from '@/components/UploadAssessment.vue'; 
 import GenerateAccessCode from '@/components/GenerateAccessCode.vue'; 
 import CourseUploadComponent from '@/components/CourseUploadComponent.vue';
 
 export default {
   components: {
-    StatsBar,
+    // StatsBar,
     UploadAssessment,
     GenerateAccessCode,
     CourseUploadComponent

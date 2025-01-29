@@ -1,114 +1,213 @@
+@import './theme';
+/* Global Styles */
 html {
-    font-family: 'Roboto', sans-serif;
-  }
-  
-  h1 {
-    font-size: 36px;
-    font-weight: bold;
-    line-height: 40px;
-  }
-  
-  h2 {
-    font-size: 32px;
-    font-weight: 500;
-    line-height: 36px;
-  }
-  
-  body {
-    font-size: 16px;
-    line-height: 24px;
-  }
-  .element {
-    height: 2rem;
-  }
-
-.red-text{
-  color: #B11F1A;
-  text-justify: auto;
-  padding: 1px 10px;
+  font-family: 'Roboto', sans-serif;
+  // montserrat, change roboto to montserrate
 }
 
+body {
+  font-size: 16px;
+  line-height: 24px;
+  color: $text-color-dark; // Use theme text color
+}
+
+/* Headings */
+h1 {
+  font-size: 36px;
+  font-weight: bold;
+  line-height: 40px;
+  color: $primary-color; // Use primary color
+}
+
+h2 {
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 36px;
+  color: $secondary-color; // Use secondary color
+}
+
+/* Button Styles */
 .v-btn {
-  background-color: #B11F1A !important; // Primary background color
-  color: #FFFFFF !important; // Text color
-  font-size: 16px; // Button font size
-  font-weight: bold; // Button font weight
-  text-transform: none; // Capitalize text
-  letter-spacing: 0.1em; // Letter spacing
-  padding: 12px 24px; // Padding for buttons
-  border-radius: 8px; // Border radius
-}
+  background-color: $primary-color !important;
+  color: $text-color !important;
+  font-size: 14px;
+  font-weight: normal;
+  text-transform: none;
+  letter-spacing: 0.1em;
+  padding: 12px 24px;
+  border-radius: 8px;
 
-/* Hover state */
-.v-btn:hover {
-  background-color: darken(#B11F1A, 10%) !important; // Darken on hover
+  &:hover {
+    background-color: $primary-color-dark !important;
+  }
 }
 
 .v-btn.v-btn--variant-text {
-  background-color: transparent !important; // Ensure transparent background
-  color: #000000 !important; // Primary color for text
-  box-shadow: none !important; // Remove shadow
-  font-size: 13px; // Button font size
-  font-weight: normal !important; // Normal font weight
+  background-color: transparent !important;
+  color: $secondary-color !important;
+  &:hover {
+    background-color: rgba($primary-color, 0.1) !important;
+  }
+}
+.v-btn.v-btn--variant-tonal {
+  background-color: $gray !important;
+  color: $secondary-color !important;
+  &:hover {
+    background-color: rgba($primary-color, 0.1) !important;
+  }
+}
+.v-btn.v-btn--variant-outline {
+  background-color: transparent !important;
+  color: $black !important;
+  outline: auto;
+  outline-color: $gray;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.1) !important;
+  }
 }
 
-//.v-table tbody tr td:nth-child(even) {
-//  background-color: #B71C1C;
-//}
-//
-//.v-table tbody tr td:nth-child(odd) {
-//  background-color: #880E4F;
-//}
+.v-btn.v-btn--variant-elevated {
+  background-color: $secondary-color !important;
+  color: $black !important;
+  outline: auto;
+  outline-color: $gray;
+
+  &:hover {
+    background-color: rgba($secondary-color, 0.5) !important;
+  }
+}
+
+/* Text Field Styles */
+.v-text-field {
+  
+  .v-field {
+    border: 1px solid $gray !important; // Outline color
+    border-radius: 8px; // Rounded corners
+    transition: border-color 0.1s ease-in-out;
+
+    &:hover {
+      border-color: $primary-color-dark !important; // Darker primary on hover
+    }
+
+    &:focus-within {
+      border-color: $gray !important; // Secondary color when focused
+    }
+  }
+
+  .v-label {
+    color: $black !important; // Label color
+  }
+
+  .v-input__control {
+    border-color: $gray !important;
+  }
+
+  .v-input__control:focus-within {
+    border-color: $secondary-color !important;
+  }
+}
+
+/* Data Table */
 .v-data-table-header th {
-  background-color: #B11F1A;
-  color: white !important;
+  background-color: $primary-color;
+  color: $text-color !important;
   padding: 16px;
-  elevation: below;
 }
 
+/* Alerts */
 .v-alert {
   background-color: transparent !important;
-  color: #FFFFFF !important; // Text color
-  font-size: 12px; // Button font size
-  font-weight: normal; // Button font weight
-  text-transform: none; // Capitalize text
+  color: $text-color !important;
+  font-size: 12px;
   margin-bottom: 1em;
-  border-radius: 5px; // Border radius
+  border-radius: 5px;
 }
 
-/* Optional: Hover state for "Text" Variant */
-.v-btn.v-btn--text:hover {
-  background-color: rgba(177, 31, 26, 0.1) !important; // Slightly transparent background on hover
-}
+/* Navigation Drawer */
 .v-navigation-drawer {
   width: 200px;
-  margin: 50px 100px 10px 10px ;
+  margin: 50px 100px 10px 10px;
+  background-color: $gray; // Use neutral color
 }
 
+/* Footer */
 .v-footer {
   height: 50px;
+  display: flex;
   align-items: center;
-  margin: 10px ;
+  margin: 10px;
+  background-color: $primary-color-dark; // Footer in dark primary
 }
 
-.mx-4 {
-  margin-left: 10px;
-  margin-right: 10px;
+input {
+  border: 1px solid $gray !important;
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: border-color 0.3s ease-in-out;
+
+  &:hover {
+    border-color: $gray !important;
+  }
+
+  &:focus {
+    border-color: $gray !important;
+    outline: none;
+  }
 }
 
-.my-4 {
-  margin-top: 10px;
+textarea {
+  border: 1px solid $gray !important;
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: border-color 0.3s ease-in-out;
+  font-size: 16px;
+  width: 100%;
+
+  &:hover {
+    border-color: $primary-color-dark !important;
+  }
+
+  &:focus {
+    border-color: $secondary-color !important;
+    outline: none;
+  }
+}
+
+.report-container {
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.report-section {
+  margin-bottom: 20px;
+  padding: auto;
+}
+
+.section-header {
+  font-size: 18px;
+  font-weight: bold;
   margin-bottom: 10px;
-}
-
-.mt-4 {
-  margin-top: 10px;
-}
-.primary {
-  background-color: darken(#B11F1A, 10%)
-}
-
-
-
-
   
+}
+
+.section-content {
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  border-radius: 5px;
+}
+
+.page-title {
+  font-weight: bold;
+  font-size: 18px;
+  display: flex;
+  padding: 10px 16px;
+  background-color: rgba($primary-color, 0.1);
+  justify-self: start;
+  padding: 20px;
+}
