@@ -50,53 +50,65 @@
 
       <!-- Upload and Save Section (same row) -->
       <div class="upload-save-section">
-        <button class="upload-btn" @click="handleFileUpload" :disabled="isLoading">
+        <v-btn variant="outline" size="Larger" @click="handleFileUpload" :disabled="isLoading">
           Click Here to Upload Files
-        </button>
-
+        </v-btn>
+        
         <div class="buttons-right">
-          <button class="update-btn" @click="updateCourse" :disabled="!isEditing || isLoading">
+          <v-btn variant="outline" size="Larger" @click="updateCourse" :disabled="!isEditing || isLoading">
             Update
-          </button>
-          <button class="save-btn" @click="saveCourse" :disabled="isLoading">
+          </v-btn>
+          <v-btn variant="elevated" size="Larger" @click="saveCourse" :disabled="isLoading">
             Save
-          </button>
+          </v-btn>
         </div>
       </div>
 
       <div class="uploaded-courses">
-        <h3>Uploaded Courses</h3>
+        <h3 class="mb-10">Uploaded Courses</h3>
         <draggable v-model="courses" :options="{ handle: '.drag-handle' }" @end="onDragEnd">
-          <div
-            v-for="(course, index) in courses"
-            :key="course.id"
-            class="course-item"
-          >
-            <div class="course-header">
-              <span class="drag-handle" style="cursor: move;">&#x21C5;</span>
-              <span>{{ index + 1 }}. {{ course.courseTitle }}</span>
-              <span>{{ course.courseDuration }} mins</span>
+          <v-container>
+    <v-row>
+      <v-col
+        v-for="(course, index) in courses"
+        :key="course.id" cols="12"
+    
+      >
+        <v-card class="course-card" >
+          <!-- Header Section -->
+          <v-card-title class="course-header d-flex justify-space-between align-center">
+            <v-icon class="drag-handle" color="grey darken-1">mdi-drag</v-icon>
+            <span class="course-title">{{ index + 1 }}. {{ course.courseTitle }}</span>
+            <v-chip class="course-duration" color="primary" size="small">
+              {{ course.courseDuration }} mins
+            </v-chip>
+          </v-card-title>
+
+          <!-- Course Body -->
+          <v-card-text class="course-body">
+            <p class="course-objectives">{{ course.courseObjectives }}</p>
+            
+            <!-- Video Preview -->
+            <div class="video-preview-container">
+              <video controls :src="course.videoFile" class="video-preview">
+                Your browser does not support the video tag.
+              </video>
             </div>
-            <div class="course-body">
-              <p>{{ course.courseObjectives }}</p>
-            </div>
-      <!-- Video Preview Container -->
-      <div class="video-preview-container">
-        <video
-          controls
-          autoplay
-          :src="course.videoFile"
-          class="video-preview"
-        >
-          Your browser does not support the video tag.
-        </video>
-      </div>
-            <!-- Actions -->
-            <div class="course-actions">
-              <button class="edit-btn" @click="editCourse(index)">Edit</button>
-              <button class="delete-btn" @click="deleteCourse(course.id)">Delete</button>
-            </div>
-          </div>
+          </v-card-text>
+
+          <!-- Action Buttons -->
+          <v-card-actions class="course-actions">
+            <v-btn variant="text" size="large" color="primary" @click="editCourse(index)">
+              <v-icon left>mdi-pencil</v-icon> Edit
+            </v-btn>
+            <v-btn variant="flat" size="medium" color="error" @click="deleteCourse(course.id)">
+              <v-icon left>mdi-delete</v-icon> Delete
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
         </draggable>
       </div>
     </div>
@@ -116,6 +128,7 @@ export default {
   },
   data() {
     return {
+      videoFileUrl: "https://sfo3.digitaloceanspaces.com/iresponder/courses/df771216-c707-4b6a-a25a-62eda67346a8-compressed.mp4",
       courseTitle: '',
       courseObjectives: '',
       courseDuration: '',
@@ -140,6 +153,7 @@ export default {
         const response = await getCourses();
         if (response.status) {
           this.courses = response.data;
+          console.log(this.courses)
         }
       } catch (error) {
         console.error('Error fetching courses:', error);
@@ -294,7 +308,7 @@ export default {
 <style scoped>
 /* Loading spinner styling */
 .loading-spinner {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -319,6 +333,7 @@ export default {
   border-radius: 5px;
   border: 1px solid #ccc;
   width: 200px;
+  color: black;
 }
 .course-actions {
   display: flex;
@@ -435,17 +450,72 @@ export default {
   box-sizing: border-box; /* Include padding in width/height calculations */
 }
 
-.course-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center; /* Align items vertically */
-  flex-wrap: wrap; /* Allow wrapping for long content */
-  gap: 10px; /* Space between items */
+.course-card {
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.2s ease-in-out;
+  &:hover {
+    transform: translateY(-5px);
+  }
+
+  .course-header {
+    font-weight: bold;
+    font-size: 18px;
+    padding: 12px;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .drag-handle {
+    cursor: grab;
+  }
+
+  .course-title {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .course-duration {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .course-body {
+    padding: 16px;
+  }
+
+  .course-objectives {
+    font-size: 14px;
+    color: #555;
+  }
+
+  .video-preview-container {
+    margin-top: 10px;
+    border-radius: 8px;
+    overflow: hidden;
+  
+  }
+
+  .video-preview {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    object-fit: cover;
+    justify-self: flex-end;
+  }
+
+  .course-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px;
+  }
 }
 
 .course-body {
   margin: 10px 0;
   word-wrap: break-word; /* Ensure long text wraps */
+  
 }
 
 .course-actions {
@@ -491,6 +561,9 @@ export default {
 .video-preview-container {
   margin-top: 5px;
   text-align: right;
+  width: 100%;
+  max-width: 300px;
+  justify-self: flex-end;
 }
 
 .video-preview {

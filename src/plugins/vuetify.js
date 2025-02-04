@@ -50,20 +50,10 @@ const myCustomLightTheme = {
 const myCustomDarkTheme = {
   dark: true,
   colors: {
-    background: '#121212',
-    surface: '#212121',
-    'surface-bright': '#1E1E1E',
-    'surface-light': '#333333',
-    'surface-variant': '#424242',
-    'on-surface-variant': '#BDBDBD',
-    primary: '#BB86FC',
-    'primary-darken-1': '#3700B3',
-    secondary: '#03DAC6',
-    'secondary-darken-1': '#018786',
-    error: '#CF6679',
-    info: '#2196F3',
-    success: '#4CAF50',
-    warning: '#FB8C00',
+    primary: '#B11F1A',
+    secondary: '#19c25a',
+    success: '#28a745',
+    error: '#dc3545',
   },
 }
 
@@ -72,7 +62,7 @@ export default createVuetify({
   theme: {
     defaultTheme: 'myCustomLightTheme',  // Set light theme as default
     themes: {
-      myCustomLightTheme,  // Light theme
+       myCustomLightTheme,  // Light theme
       myCustomDarkTheme,   // Dark theme
     },
   },

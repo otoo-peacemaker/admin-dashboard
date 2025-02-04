@@ -1,114 +1,272 @@
+@import './theme';
+
+/* Global Styles */
 html {
-    font-family: 'Roboto', sans-serif;
-  }
-  
-  h1 {
-    font-size: 36px;
-    font-weight: bold;
-    line-height: 40px;
-  }
-  
-  h2 {
-    font-size: 32px;
-    font-weight: 500;
-    line-height: 36px;
-  }
-  
-  body {
-    font-size: 16px;
-    line-height: 24px;
-  }
-  .element {
-    height: 2rem;
-  }
-
-.red-text{
-  color: #B11F1A;
-  text-justify: auto;
-  padding: 1px 10px;
+  font-family: 'Montserrat', sans-serif; // Changed to Montserrat
 }
 
+body {
+  font-size: 16px;
+  line-height: 1.5;
+  color: $text-color-dark;
+}
+
+/* Headings */
+h1 {
+  font-size: 40px;
+  font-weight: bold;
+  line-height: 48px;
+  color: $black;
+}
+
+h2 {
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 40px;
+  color: $black;
+}
+
+h3 {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 34px;
+  color: $black;
+}
+
+h4 {
+  font-size: 24px;
+  font-weight: 500;
+  line-height: 30px;
+}
+
+h5 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+h6 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Paragraphs & Links */
+p {
+  font-size: 16px;
+  line-height: 24px;
+  color: $black;
+}
+
+a {
+  font-size: 16px;
+  font-weight: 500;
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
+}
+
+/* Button Styles */
 .v-btn {
-  background-color: #B11F1A !important; // Primary background color
-  color: #FFFFFF !important; // Text color
-  font-size: 16px; // Button font size
-  font-weight: bold; // Button font weight
-  text-transform: none; // Capitalize text
-  letter-spacing: 0.1em; // Letter spacing
-  padding: 12px 24px; // Padding for buttons
-  border-radius: 8px; // Border radius
-}
+  background-color: $primary-color !important;
+  color: $text-color !important;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  padding: 12px 24px;
+  border-radius: 8px;
 
-/* Hover state */
-.v-btn:hover {
-  background-color: darken(#B11F1A, 10%) !important; // Darken on hover
+  &:hover {
+    background-color: $primary-color-dark !important;
+  }
 }
 
 .v-btn.v-btn--variant-text {
-  background-color: transparent !important; // Ensure transparent background
-  color: #000000 !important; // Primary color for text
-  box-shadow: none !important; // Remove shadow
-  font-size: 13px; // Button font size
-  font-weight: normal !important; // Normal font weight
+  background-color: transparent !important;
+  color: $secondary-color !important;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.1) !important;
+  }
 }
 
-//.v-table tbody tr td:nth-child(even) {
-//  background-color: #B71C1C;
-//}
-//
-//.v-table tbody tr td:nth-child(odd) {
-//  background-color: #880E4F;
-//}
+.v-btn.v-btn--variant-tonal {
+  background-color: $gray !important;
+  color: $black !important;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.1) !important;
+  }
+}
+
+.v-btn.v-btn--variant-outline {
+  background-color: transparent !important;
+  color: $black !important;
+  border: 1px solid $gray;
+
+  &:hover {
+    background-color: rgba($primary-color, 0.1) !important;
+  }
+}
+
+.v-btn.v-btn--variant-elevated {
+  background-color: $secondary-color !important;
+  color: $white !important;
+  border: 1px solid $gray;
+
+  &:hover {
+    background-color: rgba($secondary-color, 0.5) !important;
+  }
+}
+
+/* Text Fields */
+.v-text-field {
+  font-size: 16px;
+  
+  .v-field {
+    border: 1px solid $gray !important;
+    border-radius: 8px;
+    transition: border-color 0.1s ease-in-out;
+
+    &:hover {
+      border-color: $primary-color-dark !important;
+    }
+
+    &:focus-within {
+      border-color: $gray !important;
+    }
+  }
+
+  .v-label {
+    color: $black !important;
+    font-size: 14px;
+  }
+
+  .v-input__control {
+    border-color: $gray !important;
+  }
+
+  .v-input__control:focus-within {
+    border-color: $secondary-color !important;
+  }
+}
+
+/* Data Table */
 .v-data-table-header th {
-  background-color: #B11F1A;
-  color: white !important;
+  background-color: $primary-color;
+  color: $text-color !important;
   padding: 16px;
-  elevation: below;
+  font-size: 16px;
 }
 
+/* Alerts */
 .v-alert {
   background-color: transparent !important;
-  color: #FFFFFF !important; // Text color
-  font-size: 12px; // Button font size
-  font-weight: normal; // Button font weight
-  text-transform: none; // Capitalize text
+  color: $text-color !important;
+  font-size: 14px;
   margin-bottom: 1em;
-  border-radius: 5px; // Border radius
+  border-radius: 5px;
 }
 
-/* Optional: Hover state for "Text" Variant */
-.v-btn.v-btn--text:hover {
-  background-color: rgba(177, 31, 26, 0.1) !important; // Slightly transparent background on hover
-}
+/* Navigation Drawer */
 .v-navigation-drawer {
-  width: 200px;
-  margin: 50px 100px 10px 10px ;
+  width: 220px;
+  background-color: $gray;
 }
 
+/* Footer */
 .v-footer {
   height: 50px;
+  display: flex;
   align-items: center;
-  margin: 10px ;
+  background-color: $primary-color-dark;
 }
 
-.mx-4 {
-  margin-left: 10px;
-  margin-right: 10px;
+/* Form Inputs */
+input, textarea {
+  font-size: 16px;
+  border: 1px solid $gray !important;
+  border-radius: 8px;
+  padding: 8px 12px;
+  transition: border-color 0.3s ease-in-out;
+  
+  &:hover {
+    border-color: $gray !important;
+  }
+
+  &:focus {
+    border-color: $gray !important;
+    outline: none;
+  }
 }
 
-.my-4 {
-  margin-top: 10px;
+textarea {
+  width: 100%;
+  height: 120px;
+}
+
+/* Tabs */
+.v-tabs {
+  .v-tab {
+    font-size: 16px;
+    font-weight: 500;
+    color: gray;
+    transition: color 0.3s ease;
+    
+    &--active {
+      color: white;
+      background-color: $primary-color !important;
+    }
+
+    &:hover {
+      color: darken(gray, 15%);
+    }
+  }
+}
+
+.v-tab--selected {
+  background-color: $primary-color !important;
+  color: white !important;
+}
+
+.inactive-tab {
+  background-color: $gray !important;
+  color: $black !important;
+}
+
+.v-tab:hover {
+  background-color: rgba($primary-color, 0.5) !important;
+  color: white !important;
+}
+
+.active-tab {
+  background-color: $primary-color; 
+  color: white;
+}
+
+/* Section Styles */
+.report-container {
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+.section-header {
+  font-size: 18px;
+  font-weight: bold;
   margin-bottom: 10px;
 }
 
-.mt-4 {
-  margin-top: 10px;
+.page-title {
+  font-weight: bold;
+  font-size: 20px;
+  padding: 10px 16px;
+  color: $white !important;
+  background-color: $primary-color !important;
+  margin-bottom: 40px;
+  padding: 20px;
 }
-.primary {
-  background-color: darken(#B11F1A, 10%)
-}
-
-
-
-
-  

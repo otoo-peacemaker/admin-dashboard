@@ -5,9 +5,10 @@
         v-for="(tabLabel, index) in tabs"
         :key="index"
         :value="tabLabel.value"
+        :elevation="2"
+        :grow="true"
+        variant=""
         :class="tabClass(tab === tabLabel.value)"
-        elevation="2"
-        grow="true"
       >
         {{ tabLabel.label }}
       </v-tab>
@@ -33,14 +34,14 @@
 </template>
 
 <script>
-import StatsBar from '@/components/StatsBar.vue'; // Ensure correct path
+// import StatsBar from '@/components/StatsBar.vue'; // Ensure correct path
 import UploadAssessment from '@/components/UploadAssessment.vue'; 
 import GenerateAccessCode from '@/components/GenerateAccessCode.vue'; 
 import CourseUploadComponent from '@/components/CourseUploadComponent.vue';
 
 export default {
   components: {
-    StatsBar,
+    // StatsBar,
     UploadAssessment,
     GenerateAccessCode,
     CourseUploadComponent
@@ -77,17 +78,12 @@ export default {
 .v-tab {
   flex: 1 1 auto; /* Ensure tabs evenly distribute */
   text-align: center;
-  transition: background-color 0.3s ease;
+  padding: 10px;
+  /* transition: background-color 0.3s ease; */
 }
 
-.active-tab {
-  background-color: #b71c1c; /* Primary color for active tab */
-  color: white;
-}
-
-.inactive-tab {
-  background-color: #e0e0e0; /* Grey color for inactive tabs */
-  color: #757575;
+.v-tabs-window-item {
+  padding: 20px;
 }
 
 </style>

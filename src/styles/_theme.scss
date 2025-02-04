@@ -1,0 +1,23 @@
+// _theme.scss
+
+// Primary Colors
+$primary-color: #B11F1A; // Main brand color
+$primary-color-dark: darken($primary-color, 10%);
+$primary-color-light: lighten($primary-color, 10%);
+
+// Secondary Colors
+$secondary-color: #78C403; // Accent or secondary color
+$secondary-color-light: lighten($secondary-color, 10%);
+
+// Neutral Colors
+$white: #FFFFFF;
+$black: #000000;
+$gray: #F5F5F5;
+
+// Text Colors
+$text-color: $white;
+$text-color-dark: $black;
+
+// Alert Colors
+$success-color: #78C403;
+$error-color: #dc3545;

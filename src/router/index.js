@@ -7,7 +7,8 @@ import ResponderData from '@/pages/ResponderData.vue';
 import IncidentInfo from '@/pages/IncidentInfo.vue';
 import UploadCourses from '@/pages/UploadCourses.vue';
 import MetricsPage from '@/pages/MetricsPage.vue';
-import GenerateAccessCodes from '@/pages/GenerateAccessCodes.vue';
+import ReportDetailsPage from '@/pages/ReportDetailsPage.vue';
+
 // import AuthLayout from '@/router/AuthRouter.vue';
 
 const routes = [
@@ -115,7 +116,6 @@ const routes = [
     {
         path: '/generate-access-codes',
         name: 'GenerateAccessCodes',
-        component: GenerateAccessCodes,
         meta: {
             activeMenu: 'assessments',
             showTitle: true,
@@ -124,6 +124,20 @@ const routes = [
             showFooter: true,
         },
     },
+    {
+        path: "/report/:id",
+        name: "ReportDetailsPage",
+        component: ReportDetailsPage,
+        props: true,
+        meta: {
+            activeMenu: 'incident-info',
+            showTitle: true,
+            showProfileIcon: true,
+            showSidebar: true,
+            showFooter: true,
+        },
+      },
+
 ];
 
 const router = createRouter({

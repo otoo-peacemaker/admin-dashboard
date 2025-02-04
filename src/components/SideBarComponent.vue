@@ -20,8 +20,8 @@
     </v-list>
     <v-divider></v-divider>
     <template v-slot:append>
-      <div class="pa-2">
-        <v-btn block @click="logout">
+      <div class="pa-2" >
+        <v-btn variant="flat" block @click="logout">
           Logout
         </v-btn>
       </div>
