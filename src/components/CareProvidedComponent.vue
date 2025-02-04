@@ -1,5 +1,6 @@
 <template>
     <div class="report-section">
+      <h3 class="section-header">Care Provided</h3>
       <div class="section-content">
         <ul>
           <li><strong>Bleeding Control:</strong> {{ bleedingControl }}</li>

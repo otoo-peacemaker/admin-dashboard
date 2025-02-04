@@ -8,7 +8,7 @@
           <!-- Report Header Card -->
     
           <v-card class="report-card" outlined>
-            <v-card-title>ID 001-2024 Report</v-card-title>
+            <v-card-title>Incident Report</v-card-title>
             <v-card-text>
               <ReportHeaderComponent
                 :age="28"
@@ -20,10 +20,28 @@
               />
             </v-card-text>
           </v-card>
-  
+       <!-- Timestamp Card -->
+       <v-card class="report-card" outlined>
+            <v-card-title>Timestamp</v-card-title>
+            <v-card-text>
+              <TimeStampComponent :timestamps="timestampsData" />
+
+            </v-card-text>
+            
+          </v-card>
+
+           <!-- Care Provided Card -->
+           <v-card class="report-card" outlined>
+            <v-card-title>On-Scene Report</v-card-title>
+            <v-card-text>
+              <OnSceneReportComponent
+                :report="reportData" 
+              />
+            </v-card-text>
+          </v-card>
           <!-- GCS Section Card -->
           <v-card class="report-card" outlined>
-            <v-card-title>GCS Section</v-card-title>
+            <v-card-title>Hospital Report</v-card-title>
             <v-card-text>
               <GCSSectionComponent
                 eyeResponse="Spontaneous"
@@ -32,12 +50,7 @@
                 :gcsScore="5"
               />
             </v-card-text>
-          </v-card>
-  
-          <!-- Vital Signs Card -->
-          <v-card class="report-card" outlined>
-            <v-card-title>Vital Signs</v-card-title>
-            <v-card-text>
+            <v-card-text >
               <VitalSignsComponent
                 :heartRate="88"
                 :bloodPressure="120"
@@ -47,11 +60,6 @@
                 injuryLocation="Ribs"
               />
             </v-card-text>
-          </v-card>
-  
-          <!-- Care Provided Card -->
-          <v-card class="report-card" outlined>
-            <v-card-title>Care Provided</v-card-title>
             <v-card-text>
               <CareProvidedComponent
                 bleedingControl="Applied sterile dressing to the wound to minimize the risk of infection."
@@ -81,6 +89,8 @@
   import VitalSignsComponent from "@/components/VitalSignsComponent.vue";
   import CareProvidedComponent from "@/components/CareProvidedComponent.vue";
   import DispositionComponent from "@/components/DispositionComponent.vue";
+  import TimeStampComponent from "@/components/TimeStampComponent.vue";
+  import OnSceneReportComponent from "@/components/OnSceneReportComponent.vue";
   
   export default {
     name: "ReportDetailsPage",
@@ -90,6 +100,8 @@
       VitalSignsComponent,
       CareProvidedComponent,
       DispositionComponent,
+      TimeStampComponent,
+      OnSceneReportComponent
     },
     props: {
       id: {
@@ -100,6 +112,19 @@
     data() {
       return {
         report: null,
+        timestampsData: {
+        notified: "12:00:00",
+        requestAccepted: "12:00:00",
+        onScene: "12:00:00",
+        toHospital: "12:00:00",
+        callCompleted: "12:00:00",
+        distance: "183.3"
+      },
+      reportData: {
+        cause: "Fracture",
+        care: "Bandaged",
+        area: "Anterior, Lower Limb"
+      }
       };
     },
     created() {
@@ -136,7 +161,8 @@
   
   .v-card-title {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 24px;
+    font-weight: bold;
     background-color: #ece8e8;
     border-bottom: 1px solid #ddd;
     padding: 10px 16px;
