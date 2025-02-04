@@ -29,7 +29,7 @@
                v-if="!isLoginPage"
                 v-model="name"
                 :rules="nameRules"
-                label="Fullname"
+                label="Full Name"
                 hide-details="auto"
                 placeholder="Enter fullname"
                 persistent-hint
@@ -56,7 +56,7 @@
                 v-if="!isLoginPage"
                 v-model="phone"
                 :rules="nameRules"
-                label="Phone number"
+                label="Phone Number"
                 hide-details="auto"
                 placeholder="Enter phone number"
                 persistent-hint
