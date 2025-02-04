@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // Constants
-const BASE_URL = 'http://localhost:3000'; // Switch to prod URL when deploying
+const BASE_URL = 'https://responder.onrender.com'; // Switch to prod URL when deploying
 const TOKEN = localStorage.getItem('token');
 
 // Axios Configuration

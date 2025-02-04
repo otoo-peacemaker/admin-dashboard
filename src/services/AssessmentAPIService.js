@@ -1,9 +1,9 @@
 // src/services/assessmentService.js
 import axios from 'axios';
-const testUrl='http://localhost:3000';
-// const prodUrl='https://responder.onrender.com';
+// const testUrl='http://localhost:3000';
+const prodUrl='https://responder.onrender.com';
 const apiClient = axios.create({
-  baseURL: testUrl,
+  baseURL: prodUrl,
 });
 
 apiClient.interceptors.request.use((config) => {

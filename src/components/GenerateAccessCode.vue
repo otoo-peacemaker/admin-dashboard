@@ -42,33 +42,40 @@
       </div>
     <!-- Generate Code Button -->
     <div class="actions">
-      <button
+      <v-btn
         class="generate-code"
+        variant="elevated"
+        size="Larger"
         :disabled="!canGenerateCode || isLoading"
         @click="handleGenerateCode"
       >
         Generate Code
-      </button>
+      </v-btn>
     </div>
 
     <!-- List of Generated Codes -->
     <div class="generated-codes">
-      <h2>Generated Codes</h2>
-      <ul v-if="codes.length">
-        <li v-for="code in codes" :key="code.id" class="code-item">
-          <p>
-            <strong>Code:</strong> {{ code.code }} <br />
-            <strong>Responder ID:</strong> {{ code.responderId }} <br />
-            <strong>Expires At:</strong> {{ new Date(code.expiresAt).toLocaleString() }}
-          </p>
-          <div class="code-actions">
-            <button class="delete-btn" @click="deleteCode(code.code)">Delete</button>
-            <button class="resend-btn" @click="resendCode(code.code)">Resend</button>
-          </div>
-        </li>
-      </ul>
-      <p v-else>No codes available</p>
-    </div>
+  <h3 class="mb-10">Generated Codes</h3>
+  <v-row v-if="codes.length">
+    <v-col v-for="code in codes" :key="code.id" cols="12" sm="6" md="6">
+      <v-card class="code-card" outlined>
+        <v-card-title class="text-h6">
+          <strong>Code:</strong> {{ code.code }}
+        </v-card-title>
+        <v-card-subtitle>
+          <strong>Responder ID:</strong> {{ code.responderId }} <br />
+          <strong>Expires At:</strong> {{ new Date(code.expiresAt).toLocaleString() }}
+        </v-card-subtitle>
+        <v-card-actions>
+          <v-btn variant="outlined" size="large" @click="deleteCode(code.code)">Delete</v-btn>
+          <v-btn variant="elevated" size="large" @click="resendCode(code.code)">Resend</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-col>
+  </v-row>
+  <p v-else>No codes available</p>
+</div>
+
   </div>
 </template>
 
@@ -194,6 +201,39 @@ export default {
 };
 </script>
 <style scoped>
+.generated-codes {
+  padding: 20px;
+}
+
+h3.mb-10 {
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.code-card {
+  transition: box-shadow 0.3s ease;
+}
+
+.code-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.v-card-title {
+  font-size: 1.1rem;
+}
+
+.v-card-subtitle {
+  font-size: 0.9rem;
+  color: #555;
+}
+
+.v-card-actions {
+  justify-content: flex-end;
+}
+
+.v-btn {
+  margin: 5px;
+}
 .swal-confirm {
         background-color: #00ba22 !important;
         color: #ffffff;

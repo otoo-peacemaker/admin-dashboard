@@ -18,6 +18,7 @@
     "jwt-decode": "^4.0.0",
     "notyf": "^3.10.0",
     "roboto-fontface": "*",
+    "socket.io-client": "^4.8.1",
     "sweetalert": "^2.1.2",
     "sweetalert2": "^11.15.10",
     "toastr": "^2.1.4",

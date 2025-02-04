@@ -1,5 +1,9 @@
 <template>
+  
   <v-container>
+    <div class="page-title" >
+        <h4>Incident reports</h4>
+    </div>
     <v-card flat>
       <v-card-title class="d-flex align-center pe-2">
         Search for report

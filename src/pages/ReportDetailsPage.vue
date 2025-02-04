@@ -1,16 +1,7 @@
 <template>
-      
-  
     <v-container class="report-container" fluid>
-        <div >
-        <h3></h3>
-        <v-card flat class="page-title">
-      <v-card-title class="page-title">
-        Report Details
-      </v-card-title>
-    </v-card>
-
-    
+        <div class="page-title" >
+        <h4> Report Details</h4>
     </div>
       <v-row dense>
         <v-col cols="12">

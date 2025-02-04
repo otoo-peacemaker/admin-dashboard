@@ -1,39 +1,80 @@
 @import './theme';
+
 /* Global Styles */
 html {
-  font-family: 'Roboto', sans-serif;
-  // montserrat, change roboto to montserrate
+  font-family: 'Montserrat', sans-serif; // Changed to Montserrat
 }
 
 body {
   font-size: 16px;
-  line-height: 24px;
-  color: $text-color-dark; // Use theme text color
+  line-height: 1.5;
+  color: $text-color-dark;
 }
 
 /* Headings */
 h1 {
-  font-size: 36px;
+  font-size: 40px;
   font-weight: bold;
-  line-height: 40px;
-  color: $primary-color; // Use primary color
+  line-height: 48px;
+  color: $black;
 }
 
 h2 {
-  font-size: 32px;
+  font-size: 34px;
+  font-weight: 600;
+  line-height: 40px;
+  color: $black;
+}
+
+h3 {
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 34px;
+  color: $black;
+}
+
+h4 {
+  font-size: 24px;
   font-weight: 500;
-  line-height: 36px;
-  color: $secondary-color; // Use secondary color
+  line-height: 30px;
+}
+
+h5 {
+  font-size: 20px;
+  font-weight: 500;
+}
+
+h6 {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+/* Paragraphs & Links */
+p {
+  font-size: 16px;
+  line-height: 24px;
+  color: $black;
+}
+
+a {
+  font-size: 16px;
+  font-weight: 500;
+  color: $primary-color;
+  text-decoration: none;
+
+  &:hover {
+    color: darken($primary-color, 10%);
+  }
 }
 
 /* Button Styles */
 .v-btn {
   background-color: $primary-color !important;
   color: $text-color !important;
-  font-size: 14px;
-  font-weight: normal;
+  font-size: 16px;
+  font-weight: 600;
   text-transform: none;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.5px;
   padding: 12px 24px;
   border-radius: 8px;
 
@@ -45,22 +86,25 @@ h2 {
 .v-btn.v-btn--variant-text {
   background-color: transparent !important;
   color: $secondary-color !important;
+
   &:hover {
     background-color: rgba($primary-color, 0.1) !important;
   }
 }
+
 .v-btn.v-btn--variant-tonal {
   background-color: $gray !important;
-  color: $secondary-color !important;
+  color: $black !important;
+
   &:hover {
     background-color: rgba($primary-color, 0.1) !important;
   }
 }
+
 .v-btn.v-btn--variant-outline {
   background-color: transparent !important;
   color: $black !important;
-  outline: auto;
-  outline-color: $gray;
+  border: 1px solid $gray;
 
   &:hover {
     background-color: rgba($primary-color, 0.1) !important;
@@ -69,34 +113,35 @@ h2 {
 
 .v-btn.v-btn--variant-elevated {
   background-color: $secondary-color !important;
-  color: $black !important;
-  outline: auto;
-  outline-color: $gray;
+  color: $white !important;
+  border: 1px solid $gray;
 
   &:hover {
     background-color: rgba($secondary-color, 0.5) !important;
   }
 }
 
-/* Text Field Styles */
+/* Text Fields */
 .v-text-field {
+  font-size: 16px;
   
   .v-field {
-    border: 1px solid $gray !important; // Outline color
-    border-radius: 8px; // Rounded corners
+    border: 1px solid $gray !important;
+    border-radius: 8px;
     transition: border-color 0.1s ease-in-out;
 
     &:hover {
-      border-color: $primary-color-dark !important; // Darker primary on hover
+      border-color: $primary-color-dark !important;
     }
 
     &:focus-within {
-      border-color: $gray !important; // Secondary color when focused
+      border-color: $gray !important;
     }
   }
 
   .v-label {
-    color: $black !important; // Label color
+    color: $black !important;
+    font-size: 14px;
   }
 
   .v-input__control {
@@ -113,22 +158,22 @@ h2 {
   background-color: $primary-color;
   color: $text-color !important;
   padding: 16px;
+  font-size: 16px;
 }
 
 /* Alerts */
 .v-alert {
   background-color: transparent !important;
   color: $text-color !important;
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 1em;
   border-radius: 5px;
 }
 
 /* Navigation Drawer */
 .v-navigation-drawer {
-  width: 200px;
-  margin: 50px 100px 10px 10px;
-  background-color: $gray; // Use neutral color
+  width: 220px;
+  background-color: $gray;
 }
 
 /* Footer */
@@ -136,16 +181,17 @@ h2 {
   height: 50px;
   display: flex;
   align-items: center;
-  margin: 10px;
-  background-color: $primary-color-dark; // Footer in dark primary
+  background-color: $primary-color-dark;
 }
 
-input {
+/* Form Inputs */
+input, textarea {
+  font-size: 16px;
   border: 1px solid $gray !important;
   border-radius: 8px;
   padding: 8px 12px;
   transition: border-color 0.3s ease-in-out;
-
+  
   &:hover {
     border-color: $gray !important;
   }
@@ -157,23 +203,50 @@ input {
 }
 
 textarea {
-  border: 1px solid $gray !important;
-  border-radius: 8px;
-  padding: 8px 12px;
-  transition: border-color 0.3s ease-in-out;
-  font-size: 16px;
   width: 100%;
+  height: 120px;
+}
 
-  &:hover {
-    border-color: $primary-color-dark !important;
-  }
+/* Tabs */
+.v-tabs {
+  .v-tab {
+    font-size: 16px;
+    font-weight: 500;
+    color: gray;
+    transition: color 0.3s ease;
+    
+    &--active {
+      color: white;
+      background-color: $primary-color !important;
+    }
 
-  &:focus {
-    border-color: $secondary-color !important;
-    outline: none;
+    &:hover {
+      color: darken(gray, 15%);
+    }
   }
 }
 
+.v-tab--selected {
+  background-color: $primary-color !important;
+  color: white !important;
+}
+
+.inactive-tab {
+  background-color: $gray !important;
+  color: $black !important;
+}
+
+.v-tab:hover {
+  background-color: rgba($primary-color, 0.5) !important;
+  color: white !important;
+}
+
+.active-tab {
+  background-color: $primary-color; 
+  color: white;
+}
+
+/* Section Styles */
 .report-container {
   margin: 0 auto;
   padding: 20px;
@@ -182,32 +255,18 @@ textarea {
   background-color: #ffffff;
 }
 
-.report-section {
-  margin-bottom: 20px;
-  padding: auto;
-}
-
 .section-header {
   font-size: 18px;
   font-weight: bold;
   margin-bottom: 10px;
-  
-}
-
-.section-content {
-  padding: 10px;
-  border: 1px solid var(--border-color);
-  display: flex;
-  justify-content: space-between;
-  border-radius: 5px;
 }
 
 .page-title {
   font-weight: bold;
-  font-size: 18px;
-  display: flex;
+  font-size: 20px;
   padding: 10px 16px;
-  background-color: rgba($primary-color, 0.1);
-  justify-self: start;
+  color: $white !important;
+  background-color: $primary-color !important;
+  margin-bottom: 40px;
   padding: 20px;
 }
